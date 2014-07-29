@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//dlaser/AdminBundle/Controller/ActividadController.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Actividad.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Afiliacion.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Cargo.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Cliente.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Contrato.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Empresa.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Paciente.php=UTF-8
+encoding//dlaser/ParametrizarBundle/Entity/Sede.php=UTF-8
+encoding/<project>=UTF-8

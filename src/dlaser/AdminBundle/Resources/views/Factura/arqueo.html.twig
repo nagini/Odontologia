@@ -1,0 +1,56 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Cierre de caja{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+{% block cuerpo %}
+    <div>
+    	<select id="sede">
+    	    <option value="">Seleccione una sede</option>
+    	    {% for sede in sedes %} 
+      			<option value="{{ sede.id }}" data-url="{{ url('factura_arqueo_imprimir', {'sede': sede.id}) }}">
+      			{{ sede.nombre }}</option>
+       		{% endfor %}       
+      	</select>
+    </div>	      		
+	      		
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript">
+
+		var lista = document.getElementById('sede');
+
+		if(lista == "")
+		{
+		}else{
+			lista.onchange = function() {
+			    var url = lista.options[lista.selectedIndex].getAttribute('data-url');
+			    window.location = url;
+			};
+		}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "::simple.html.twig" %}
+
+{% block stylesheets %}
+<style>
+	body{font-size: 31px;}
+
+	table {
+	  clear: both;
+	  margin-bottom: 2em;
+	  width: 100%;
+	}
+
+	th {
+	  background-color: #C6C6C6;
+	  text-align: center;
+	}
+	
+	tr, th, td {
+	  border: 1px solid #C6C6C6;
+	  border-width: 1px 0;
+	  padding: .5em .25em;
+	  font-size: 30px;
+	}
+</style>    
+{% endblock %}
+
+{% set label_mes = {'1': 'ENERO', '2': 'FEBRERO', '3': 'MARZO', '4': 'ABRIL', '5': 'MAYO', '6': 'JUNIO', '7': 'JULIO', '8': 'AGOSTO', '9': 'SEPTIEMBRE', '10': 'OCTUBRE', '11': 'NOVIEMBRE', '12': 'DICIEMBRE'} %}
+
+{% block space %}
+	<p align="center">SERVICIOS PRESTADOS EN CARDIOLOGIA DESDE EL <b>{{ f_i|date('d-m-Y') }}</b> HASTA EL <b>{{ f_f|date('d-m-Y') }}</b><br />POR:<br /><b>{{ usuario.nombre }} {{ usuario.apellido }}</b></p>
+{% endblock %}
+
+{% block body %}
+
+	<table>
+		<tbody>
+			<tr>
+				<td width="40">Tipo</td>
+				<td width="90">Identificación</td>
+				<td width="70">Fecha</td>
+				<td width="100">Cliente</td>
+				<td width="100">Autorización</td>
+				<td width="190">Paciente</td>
+				<td width="90">Cargo</td>
+			</tr>
+			
+        {% set label_cargo = {'890202': 'CONSULTA', '881234': 'ECO', '895001': 'HOLTER', '894102': 'ESFUERZO', '895101': 'EKG', '920407': 'MIBI', '920408': 'DIPI', '893805': 'ESPIRO', '881236': 'ECOSTRESS', '896100': 'MAPA', '933600': 'R.C'} %}
+        
+        {% for entity in entities %}
+            <tr>
+                <td width="40">{{ entity.tipoId }}</td>
+                <td width="90">{{ entity.identificacion }}</td>
+                <td width="70">{{ entity.fecha|date('d-m-Y') }}</td>
+                <td width="100">{{ entity.nombre }}</td>
+                <td width="100">{{ entity.autorizacion }}</td>
+                <td width="190">{{ entity.priNombre|capitalize }} {{ entity.segNombre|capitalize }} {{ entity.priApellido|capitalize }} {{ entity.segApellido|capitalize }}</td>
+                <td width="90">{{ label_cargo[entity.cups] }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td>No tenemos actividades realizadas en este periodo de tiempo.</td>
+         	</tr>
+        {% endfor %}
+        
+        	<tr>
+         		<td COLSPAN="7"><p align="center"><b>CONSOLIDADO DE ACTIVIDADES</b></p></td>
+         	</tr>
+        
+        {% for canti in cantidad %}
+            <tr>
+                <td COLSPAN="3">{{ label_cargo[canti.cups] }}</td>
+                <td COLSPAN="4">{{ canti.cantidad }}</td>
+                
+            </tr>
+         {% else %}
+         	<tr>
+         		<td>No tenemos actividades realizadas en este periodo de tiempo.</td>
+         	</tr>
+        {% endfor %}       
+        </tbody>
+    </table>
+    
+{% endblock %}

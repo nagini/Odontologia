@@ -1,0 +1,45 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Nueva restricción{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+
+{% block cuerpo %}
+
+<form action="{{ path('restriccion_save', { 'id' : id }) }}" method="post" {{ form_enctype(form) }}>
+    <fieldset>
+    	<legend>Datos de la restricción</legend>
+    	{{ form_widget(form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Crear</span>
+    </button>
+    <a href="{{ path('agenda_show', {'id' : id }) }}" class="button left"><span class="label">Regresar al listado</span></a>
+    
+</form>
+{% endblock %}

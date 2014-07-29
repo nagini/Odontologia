@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Cargo" table="cargo">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="cups" type="string" column="cups" length="8"/>
+    <field name="nombre" type="string" column="nombre" length="255"/>
+    <field name="indicacion" type="text" column="indicacion"/>
+    <field name="valor" type="integer" column="valor"/>
+    <many-to-many field="cliente" target-entity="Cliente" inversed-by="cargo">
+      <join-table name="cliente_cargo">
+        <join-columns>
+          <join-column name="cargo_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="cliente_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

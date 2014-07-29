@@ -1,0 +1,415 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block stylesheets %}
+	{{ parent() }}
+
+	<link href="{{ asset('bundles/dlaser/css/jquery-ui.custom.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Nueva reserva{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+{% block cuerpo %}
+
+<form action="{{ path('cupo_save') }}" method="post" {{ form_enctype(form) }}>
+    <fieldset>
+    	<legend>Datos de la reserva</legend>
+            {{ form_errors(form) }}
+            
+        <div id="ajaxMsg"></div>
+        
+        <div>
+            {{ form_label(form.sede) }}
+            {{ form_errors(form.sede) }}
+            {{ form_widget(form.sede) }}
+        </div>
+        
+        <div>
+            {{ form_label(form.paciente) }}
+            {{ form_errors(form.paciente) }}
+            {{ form_widget(form.paciente) }}            
+            
+            <a id="btnNewPaciente" href="{{ path('paciente_new') }}" target="popup" title="Nuevo paciente" onClick="popup(this.href,750,600); return false;"><span>Crear</span></a>
+            <a class="button" id="btnAjax" href="#" title="Consultar"><span class="icon icon198"></span></a>
+            
+        </div>
+
+        <div>
+            {{ form_label(form.cliente) }}
+            {{ form_errors(form.cliente) }}
+            {{ form_widget(form.cliente) }}
+        	<a id="create-user">Agregar cliente</a>        
+        </div>
+        
+        <div id="dialog-form" title="Agregar cliente" style="display:none">		
+
+				<fieldset>
+					<legend>Datos de la aseguradora</legend>
+        			{{ form_widget(form_afil) }}
+				</fieldset>
+
+		</div>
+        
+        
+        <div id="infoPaciente" style="display:none;">
+            <label for="nombre">Nombre</label>
+            <span id="nombre"></span><br /><br />
+        </div>        
+                      
+            {{ form_rest(form) }}
+    	
+    </fieldset>
+    
+    <div class="apple_overlay" id="overlay">
+      <div class="contentWrap"></div>
+    </div>  
+    
+    <button class="action blue" type="submit">
+        <span class="label">Crear</span>
+    </button>
+    <a href="{{ path('cupo_list') }}" class="button left"><span class="label">Listado de reservas</span></a>
+    
+</form>
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="{{ asset('bundles/dlaser/js/jquery-ui-1.8.23.custom.min.js') }}"></script>
+<script src="{{ asset('bundles/dlaser/js/jquery.loadmask.min.js') }}"></script>
+
+<script type="text/javascript">
+
+	function popup(url,ancho,alto) {
+		var posicion_x; 
+		var posicion_y; 
+
+		posicion_x=(screen.width/2)-(ancho/2); 
+		posicion_y=(screen.height/2)-(alto/2); 
+
+		window.open(url, "", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=yes,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	} 
+
+	$(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+		var name = $( "#name" ),
+			email = $( "#email" ),
+			password = $( "#password" ),
+			allFields = $( [] ).add( name ).add( email ).add( password ),
+			tips = $( ".validateTips" );
+
+		$( "#dialog-form" ).dialog({
+			autoOpen: false,
+			height: 300,
+			width: 450,
+			modal: true,
+			buttons: {
+				"Agregar": function() {
+
+					var url = "{{ path('afiliacion_ajax_save') }}"
+
+					var cliente = $("#newAfiliacion_cliente").val();
+					var paciente = $("#Cupo_paciente").val();
+
+					$.post(url,{
+		                cliente: cliente,
+		                paciente: paciente
+		            },function(data){
+		                if(data.responseCode==200 ){
+
+		                	var select = $('#Cupo_cliente');
+	                		if(select.prop) {
+	                		  var options = select.prop('options');
+	                		}
+	                		else {
+	                		  var options = select.attr('options');
+	                		}
+
+	                		options[options.length] = new Option(data.nombre, data.id);
+
+	                		$('#ajaxMsg').html(data.msg);
+		                    $('#ajaxMsg').css("color","green");
+
+		                 }
+		                 else if(data.responseCode==400){
+		                	$("#programacion").empty();
+		                  	$('#ajaxMsg').html(data.msg);
+		                    $('#ajaxMsg').css("color","red");
+		                 }
+		                 else{
+		             	    alert("Ha ocurrido un error en el sistema.");
+		                 }
+		          });
+
+					$( this ).dialog( "close" );
+				},
+				Cancelar: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {
+				allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+
+		$( "#create-user" )
+			.button()
+			.click(function() {
+				$( "#dialog-form" ).dialog( "open" );
+			});
+	});
+
+    var idpaciente = "";
+
+    function buscarCargo(){
+        
+    	var url="{{ path('cargo_buscar') }}";
+
+    	var cliente = $("#Cupo_cliente").val();
+    	var sede = $("#Cupo_sede").val();    	
+        
+        $.post(url,{
+               cliente: cliente,
+               sede: sede
+        },function(data){
+            if(data.responseCode==200 ){
+
+                $("#ajaxMsg").empty();
+
+        		var select = $('#Cupo_cargo');
+        		if(select.prop) {
+        		  var options = select.prop('options');
+        		}
+        		else {
+        		  var options = select.attr('options');
+        		}
+        		$('option', select).remove();
+
+        		options[options.length] = new Option('Seleccione actividad', '');
+
+        		$.each(data.cargo, function(val, text) {
+        		    options[options.length] = new Option(text, val);
+        		});
+        		
+        		select.val('');
+        		                    
+            }
+            else if(data.responseCode==400){
+
+            	$('#Cupo_cargo').empty();
+            	$('#Cupo_agenda').empty();
+            	$('#Cupo_hora').empty();            	            	
+            	$('#ajaxMsg').html(data.msg);
+                $('#ajaxMsg').css("color","red");
+                
+                
+            }
+            else{
+        	    alert("Ha ocurrido un error en el sistema.");
+            }
+        });    	
+    } 
+
+    $(document).ready(function() {
+
+        $("#btnAjax").click(function(){
+
+            var parametro = $("#Cupo_paciente").val();
+
+            $("#nombre").empty();
+            $("#Cupo_cliente").empty();
+            $("#Cupo_cargo").empty();
+            $("#Cupo_agenda").empty();
+            $("#Cupo_hora").empty();         
+
+            if($.isNumeric(parametro)){                
+
+                var url="{{ path('paciente_buscar') }}";
+    
+                $.post(url,{
+                       id: parametro
+                },function(data){
+                    if(data.responseCode==200 ){
+
+                    	$("#ajaxMsg").empty();
+                    	$('#btnNewPaciente').css("display","none");
+                    	$('#NewCliente').css("display","none");            	    	
+                    	
+                        idpaciente = data.id;
+
+                    	$('#nombre').append(document.createTextNode(data.nombre));
+                		$('#infoPaciente').css("display","block");
+    
+                		var select = $('#Cupo_cliente');
+                		if(select.prop) {
+                		  var options = select.prop('options');
+                		}
+                		else {
+                		  var options = select.attr('options');
+                		}
+                		$('option', select).remove();
+
+                	    if(data.cliente){
+                	    	options[options.length] = new Option('Seleccione aseguradora', '');
+                	    	
+                    	}else{
+                    		options[options.length] = new Option('--', '');
+                        }            	        
+    
+                		$.each(data.cliente, function(val, text) {
+                		    options[options.length] = new Option(text, val);
+                		});
+                		
+                		select.val('');
+
+                		$('#NewCliente').css("display","inline");
+                		$('#create-user').css("display","inline-block");         		                    
+                    }
+                    else if(data.responseCode==400){
+                    	$("#nombre").empty();
+                        $('#ajaxMsg').html(data.msg);
+                        $('#ajaxMsg').css("color","red");
+                        $('#btnNewPaciente').css("display","inline");
+                        $('#create-user').css("display","none");
+            	    	
+                    }
+                    else{
+                	    alert("Ha ocurrido un error en el sistema.");
+                    }
+                });
+
+                return false;
+            }else{
+                alert("Por favor ingrese un valor valido.")
+            }
+       });
+
+        $("#Cupo_sede").change(function(){
+            
+            var sede = $("#Cupo_sede").val();
+            var cliente = $("#cliente").val();
+            
+        	if($.isNumeric(cliente) && $.isNumeric(sede)){
+            	buscarCargo();
+        	}
+        });
+
+        $("#Cupo_cliente").change(function(){
+        	buscarCargo();
+        });
+
+        $("#Cupo_cargo").change(function(){
+
+        	var url="{{ path('agenda_buscar') }}";
+
+        	$("#Cupo_agenda").empty();
+        	$("#Cupo_hora").empty();
+
+        	var cliente = $("#Cupo_cliente").val();
+        	var sede = $("#Cupo_sede").val();
+        	var cargo = $("#Cupo_cargo").val();
+            
+            $.post(url,{
+                   cliente: cliente,
+                   sede: sede,
+                   cargo: cargo
+            },function(data){
+                if(data.responseCode==200 ){
+
+            		var select = $('#Cupo_agenda');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+
+            		options[options.length] = new Option('Seleccione agenda', '');
+
+            		$.each(data.agenda, function(val, text) {
+            		    options[options.length] = new Option(text, val);
+            		});
+            		
+            		select.val('');
+            		                    
+                }
+                else if(data.responseCode==400){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });
+            
+        });
+
+
+        $("#Cupo_agenda").change(function(){
+
+        	var url="{{ path('cupo_buscar') }}";
+
+        	var cargo = $("#Cupo_cargo").val();
+        	var agenda = $("#Cupo_agenda").val();
+            
+            $.post(url,{
+                   cargo: cargo,
+                   agenda: agenda,
+                   paciente: idpaciente
+            },function(data){
+                if(data.responseCode==200 ){
+
+            		var select = $('#Cupo_hora');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+
+            		options[options.length] = new Option('Seleccione hora', '');
+
+            		$.each(data.cupo, function(val, text) {
+            		    options[options.length] = new Option(text, data.fecha+' '+text+':00');
+            		});
+            		
+            		select.val('');
+            		                            		                    
+                }
+                else if(data.responseCode==400){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });
+            
+        });        
+    });
+</script>    
+{% endblock %}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Hc" table="hc">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fecha" type="datetime" column="fecha"/>
+    <field name="sistole" type="integer" column="sistole"/>
+    <field name="diastole" type="integer" column="diastole"/>
+    <field name="fC" type="integer" column="f_c"/>
+    <field name="fR" type="integer" column="f_r"/>
+    <field name="peso" type="integer" column="peso"/>
+    <field name="estatura" type="integer" column="estatura"/>
+    <field name="hta" type="string" column="hta" length="2"/>
+    <field name="diabetes" type="string" column="diabetes" length="2"/>
+    <field name="dislipidemia" type="string" column="dislipidemia" length="2"/>
+    <field name="tabaquismo" type="string" column="tabaquismo" length="2"/>
+    <field name="obesidad" type="string" column="obesidad" length="2"/>
+    <field name="anteFamiliar" type="string" column="ante_familiar" length="2"/>
+    <field name="sedentarismo" type="string" column="sedentarismo" length="2"/>
+    <field name="enfermedad" type="text" column="enfermedad"/>
+    <field name="revCardiovascular" type="text" column="rev_cardiovascular"/>
+    <field name="exaFisico" type="text" column="exa_fisico"/>
+    <field name="interconsulta" type="string" column="interconsulta" length="100"/>
+    <field name="motivoInter" type="text" column="motivo_inter"/>
+    <field name="manejo" type="text" column="manejo"/>
+    <field name="control" type="integer" column="control"/>
+    <field name="ctrlPrioritario" type="boolean" column="ctrl_prioritario"/>
+    <field name="postfecha" type="integer" column="postfecha"/>
+    <many-to-many field="cie" target-entity="Cie" inversed-by="hc">
+      <join-table name="cie_hc">
+        <join-columns>
+          <join-column name="hc_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="cie_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="medicamento" target-entity="Medicamento" mapped-by="hc"/>
+    <many-to-one field="factura" target-entity="Factura" orphan-removal="">
+      <join-columns>
+        <join-column name="factura_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

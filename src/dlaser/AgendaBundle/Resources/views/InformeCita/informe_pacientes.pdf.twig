@@ -1,0 +1,59 @@
+{% extends "::simple.html.twig" %}
+
+{% block stylesheets %}
+<style>
+	body{font-size: 31px;}
+
+	table {
+	  clear: both;
+	  margin-bottom: 2em;
+	  width: 100%;
+	}
+
+	th {
+	  background-color: #C6C6C6;
+	  text-align: center;
+	}
+	
+	tr, th, td {
+	  border: 1px solid #C6C6C6;
+	  border-width: 1px 0;
+	  padding: .5em .25em;
+	  font-size: 30px;
+	}
+</style>    
+{% endblock %}
+
+{% block space %}
+	<h1><p align="center">Informe Citas Paciente {{ paciente.priNombre }} {{ paciente.segNombre }} {{ paciente.priApellido }} {{ paciente.segApellido }}</p></h1>
+	<h5> C.C :{{ paciente.identificacion }}  Movil : {{ paciente.movil }}</h5>
+{% endblock %}
+
+{% block body %}
+ <table>
+ 	<thead>
+		<tr>
+	    	<th>No</th>	        
+	        <th>Fecha</th>
+	        <th>Estado</th>
+	        <th>Nota</th>
+	        <th>Actividad</th>          
+		</tr>  
+	</thead>
+    <tbody>
+    	<!-- la suma de los cliente se esta manejando por medio de los id de los clientes q se encuentran creados en la base de datos.-->
+    	{% set mylist = {'F': 'CUMPLIDA', 'A': 'NO ASISTIDA', 'C': 'CANCELADA'} %}
+		
+		
+		{% for entities in entity %}						
+        	<tr>
+            	<td>{{ loop.index }}</td>
+            	<td>{{ entities.hora | date('d-m-Y h:i') }}</td>
+            	<td>{{ mylist[entities.estado] }}</td>
+            	<td>{{ entities.nota }}</td>                
+                <td>{{ entities.nombre }}</td>
+			</tr>
+        {% endfor %}       
+	</tbody>
+</table>	
+{% endblock %}

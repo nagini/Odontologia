@@ -1,0 +1,64 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de cargos{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Indicación</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('cargo_show', {'id':entity.id}) }}">{{ entity.cups }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.indicacion }}</td>
+                <td>${{ entity.valor | number_format(0, ',', '.')}}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="4">No tenemos cargos creados.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if entities %}
+		{{ simple_paginator_render('cargo_list', null) }}
+    {% endif %}
+    
+    <a href="{{ path('cargo_new') }}" class="button left"><span class="label">Nuevo cargo</span></a>    
+    
+{% endblock %}

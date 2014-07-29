@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block head %}
+
+	<header>
+		<div class="container_16">
+			<div id="logo" class="grid_3"></div>
+			<div id="banner_cliente" class="grid_13"></div>
+		</div>
+		
+		<nav>
+			<div class="container_16">{% block menu %}{% endblock %}</div>
+		</nav>
+		
+	</header>
+	
+{% endblock %}
+
+{% block body %}
+	<section id="wrapper">
+		<div class="container_16">{% block rastro %}{% endblock %}</div>
+		<div class="container_16"><h1 id="titulo">{% block titulo %}{% endblock %}</h1></div>
+		<div class="container_16">{% block msg %}{% endblock %}</div>
+		<div class="container_16">{% block cuerpo %}{% endblock %}</div>
+	</section>
+{% endblock %}
+
+{% block footer %}
+	<footer>
+		<div class="container_16"><div id="pie">2014 - Con la tecnologia kenovix</div></div>
+	</footer>
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">
+		$(function() {
+	    	if ($.browser.msie && $.browser.version.substr(0,1)<7)
+	        {
+				$('li').has('ul').mouseover(function(){
+					$(this).children('ul').show();
+					}).mouseout(function(){
+					$(this).children('ul').hide();
+					})
+	       	}
+	  	});
+
+		$(document).ready(function(){
+            setTimeout(function(){ $(".mensajes").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).slideUp(300);}, 3000);  
+        });	        
+    </script>
+{% endblock %}

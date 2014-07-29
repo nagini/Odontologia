@@ -1,0 +1,110 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Detalles de la agenda{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+
+{% block cuerpo %}
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Inicia</th>
+                <td>{{ agenda.fechaInicio|date('d-m-Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Finaliza</th>
+                <td>{{ agenda.fechaFin|date('d-m-Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Intervalo</th>
+                <td>{{ agenda.intervalo }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>
+                    {% if agenda.estado == 'A' %}
+            		    Activo
+            	    {% else %}
+            		    Inactivo
+            	    {% endif %}
+            	</td>
+            </tr>
+            <tr>
+                <th>Nota</th>
+                <td>{{ agenda.nota }}</td>
+            </tr>
+            <tr>
+                <th>Sede</th>
+                <td>{{ agenda.sede.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Asignada</th>
+                <td>{{ agenda.usuario.nombre }} {{ agenda.usuario.apellido }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <a href="{{ path('agenda_edit', { 'id': agenda.id }) }}" class="button left"><span class="label">Modificar agenda</span></a>
+    <a href="{{ path('agenda_list') }}" class="button middle"><span class="label">Regresar al listado</span></a> 
+    
+    <h2>Restricciones asociadas</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Cliente</th>
+                <th>Cargo</th>
+                <th>Sede</th>
+                <th>Cantidad</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for restriccion in restricciones %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ restriccion.cliente }}</td>
+                <td>{{ restriccion.cargo }}</td>
+                <td>{{ restriccion.sede }}</td>
+                <td>{{ restriccion.cantidad }}</td>
+                <td>
+                    <a class="button" href="{{ path('restriccion_edit', {'id' : restriccion.id, 'agenda' : agenda.id }) }}" title="Modificar"><span class="icon icon145"></span></a>
+                    <a class="button" href="{{ path('restriccion_delete', {'id' : restriccion.id, 'agenda' : agenda.id }) }}" title="Eliminar"><span class="icon icon186"></span></a></td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="6">No tenemos restricciones creadas.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{{ path('restriccion_new', { 'id': agenda.id }) }}" class="button right"><span class="label">Crear restricción</span></a>
+{% endblock %}

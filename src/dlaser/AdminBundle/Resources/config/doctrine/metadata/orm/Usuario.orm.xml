@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Usuario" table="usuario">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="60"/>
+    <field name="apellido" type="string" column="apellido" length="60"/>
+    <field name="perfil" type="string" column="perfil" length="13"/>
+    <field name="telefono" type="string" column="telefono" length="10"/>
+    <field name="direccion" type="string" column="direccion" length="60"/>
+    <field name="tp" type="string" column="tp" length="11"/>
+    <field name="especialidad" type="string" column="especialidad" length="30"/>
+    <field name="password" type="string" column="password" length="60"/>
+    <field name="email" type="string" column="email" length="200"/>
+    <field name="firma" type="string" column="firma" length="255"/>
+    <many-to-many field="cie" target-entity="Cie" inversed-by="usuario">
+      <join-table name="cie_usuario">
+        <join-columns>
+          <join-column name="usuario_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="cie_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="examen" target-entity="Examen" inversed-by="usuario">
+      <join-table name="examen_usuario">
+        <join-columns>
+          <join-column name="usuario_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="examen_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="sede" target-entity="Sede" mapped-by="usuario"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

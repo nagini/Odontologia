@@ -1,0 +1,85 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de pacientes{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+
+<form action="{{ path('paciente_search') }}" method="post" {{ form_enctype(form) }}>
+    <fieldset>
+    	<legend>Busqueda</legend>
+    	{{ form_widget(form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Buscar</span>
+    </button>    
+</form><br/><br/><br/>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Identificación</th>
+                <th>Nombre</th>
+                <th>Opción</th>
+            </tr>
+        </thead>
+        <tbody>
+	        <tr>
+	        	<td colspan='3'><a href="{{ path('paciente_list', {'char':'A'}) }}">A</a><a href="{{ path('paciente_list', {'char':'B'}) }}">B</a><a href="{{ path('paciente_list', {'char':'C'}) }}">C</a>
+	        	<a href="{{ path('paciente_list', {'char':'D'}) }}">D</a><a href="{{ path('paciente_list', {'char':'E'}) }}">E</a><a href="{{ path('paciente_list', {'char':'F'}) }}">F</a>
+	        	<a href="{{ path('paciente_list', {'char':'G'}) }}">G</a><a href="{{ path('paciente_list', {'char':'H'}) }}">H</a><a href="{{ path('paciente_list', {'char':'I'}) }}">I</a>
+	        	<a href="{{ path('paciente_list', {'char':'J'}) }}">J</a><a href="{{ path('paciente_list', {'char':'K'}) }}">K</a><a href="{{ path('paciente_list', {'char':'L'}) }}">L</a>
+	        	<a href="{{ path('paciente_list', {'char':'M'}) }}">M</a><a href="{{ path('paciente_list', {'char':'N'}) }}">N</a><a href="{{ path('paciente_list', {'char':'O'}) }}">O</a>
+	        	<a href="{{ path('paciente_list', {'char':'P'}) }}">P</a><a href="{{ path('paciente_list', {'char':'Q'}) }}">Q</a><a href="{{ path('paciente_list', {'char':'R'}) }}">R</a>
+	        	<a href="{{ path('paciente_list', {'char':'S'}) }}">S</a><a href="{{ path('paciente_list', {'char':'T'}) }}">T</a><a href="{{ path('paciente_list', {'char':'U'}) }}">U</a>
+	        	<a href="{{ path('paciente_list', {'char':'V'}) }}">V</a><a href="{{ path('paciente_list', {'char':'W'}) }}">W</a><a href="{{ path('paciente_list', {'char':'X'}) }}">X</a>
+	        	<a href="{{ path('paciente_list', {'char':'Y'}) }}">Y</a><a href="{{ path('paciente_list', {'char':'Z'}) }}">Z</a></td>
+	    	</tr>
+	        {% for entity in entities %}
+	            <tr>
+	                <td>{{ loop.index }}</td>
+	                <td><a href="{{ path('paciente_show', {'id':entity.id}) }}">{{ entity.identificacion }}</a></td>
+	                <td>{{ entity.priNombre }} {{ entity.segNombre }} {{ entity.priApellido }} {{ entity.segApellido }}</td>
+	                <td><a href="{{ path('informe_tipo_paciente', {'paciente':entity.id}) }}">Informe</a></td>
+	            </tr>
+	         {% else %}
+	         	<tr>
+	         		<td colspan="3">No tenemos pacientes creados.</td>
+	         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if entities %}
+		{{ simple_paginator_render('paciente_list',null,{routeParams:{'char':char}}) }}
+    {% endif %}
+    
+    <a href="{{ path('paciente_new') }}" class="button left"><span class="label">Nuevo paciente</span></a>
+    
+    
+{% endblock %}

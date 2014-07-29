@@ -1,0 +1,91 @@
+{% extends "::simple.html.twig" %}
+
+{% block stylesheets %}
+<style>
+		
+	table.cliente {
+    	font-size: 9pt;
+    }
+    
+    table.descripcion {
+    	font-size: 9pt;
+        
+    }
+    
+    table.valores{
+    	font-size:9pt;
+    }
+</style>     
+{% endblock %}
+
+
+{% block space %}
+<h4 align="center">NIT. 900.225.202-2</h4><br />
+<h5 align="center">I.V.A RÉGIMEN COMÚN</h5><br /><br />
+{% endblock %}
+
+{% block body %}
+
+	<table border="1" CELLPADDING="5" class="cliente">
+ 		<tbody>
+            <tr>
+            	<td width="20%">FECHA:</td>                
+            	<td width="63%">{{ entity.fecha|date('d-m-Y') }}</td>
+            	<td width="17%" rowspan="5" align="center">FACTURA DE VENTA<br /><br />N°  <strong>CC{{ entity.id }}</strong></td>                
+            </tr>
+            <tr>
+            	<td width="20%">EMPRESA:</td>                
+            	<td width="63%">{{ entity.cliente.razon }}</td>
+            </tr>
+            <tr>
+            	<td width="20%">NIT:</td>                
+            	<td width="63%">{{ entity.cliente.nit }}</td>
+            </tr>
+            <tr>
+            	<td width="20%">DIRECCIÓN:</td>                
+            	<td width="63%">{{ entity.cliente.direccion }}</td>
+            </tr>
+            <tr>
+            	<td width="20%">TELEFONO:</td>                
+            	<td width="63%">{{ entity.cliente.telefono }}</td>
+            </tr>
+        </tbody>             
+	</table>
+	
+	<br /><br />
+		
+	<table border="1" CELLPADDING="5" class="descripcion">
+ 		<tbody>
+            <tr>
+            	<td width="3%" colspan="2"></td>                
+            	<td width="80%" align="center"><strong>CONCEPTO</strong></td>
+            	<td width="17%" align="center"><strong>VALOR</strong></td>                
+            </tr>
+            <tr>           
+            	<td width="3%"><img src="{{ asset('bundles/cimhe/images/rd.png') }}" border="0" /></td> 
+            	<td height="550" width="80%"><br /><br /><br /><br /><br /><br />{{ entity.concepto }}</td>
+            	<td width="17%" align="center"><br /><br /><br /><br /><br /><br />${{ entity.subtotal|number_format(0) }}</td>                
+            </tr>            
+        </tbody>             
+	</table>
+	
+	<table border="1" CELLPADDING="5" class="valores">
+ 		<tbody>
+            <tr>
+            	<td width="60%" rowspan="3">Entrega:</td>                
+            	<td width="23%" align="center">SUBTOTAL</td>
+            	<td width="17%" align="center">${{ entity.subtotal|number_format(0) }}</td>                
+            </tr>
+            <tr>
+            	               
+            	<td width="23%" align="center">I.V.A</td>
+            	<td width="17%" align="center">${{ entity.iva|number_format(0) }}</td>                
+            </tr>
+            <tr>
+            	                
+            	<td width="23%" align="center">TOTAL</td>
+            	<td width="17%" align="center">${{ (entity.subtotal+entity.iva)|number_format(0) }}</td>                
+            </tr>            
+        </tbody>             
+	</table>
+{% endblock %}

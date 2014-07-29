@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Sede" table="sede">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="80"/>
+    <field name="ciudad" type="string" column="ciudad" length="60"/>
+    <field name="telefono" type="integer" column="telefono"/>
+    <field name="movil" type="string" column="movil" length="10"/>
+    <field name="direccion" type="string" column="direccion" length="80"/>
+    <field name="email" type="string" column="email" length="200"/>
+    <many-to-many field="cliente" target-entity="Cliente" inversed-by="sede">
+      <join-table name="contrato">
+        <join-columns>
+          <join-column name="sede_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="cliente_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="usuario" target-entity="Usuario" inversed-by="sede">
+      <join-table name="sede_usuario">
+        <join-columns>
+          <join-column name="sede_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="usuario_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-one field="empresa" target-entity="Empresa" orphan-removal="">
+      <join-columns>
+        <join-column name="empresa_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

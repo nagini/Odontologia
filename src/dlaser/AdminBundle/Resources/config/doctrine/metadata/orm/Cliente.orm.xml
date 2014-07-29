@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Cliente" table="cliente">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="codEps" type="string" column="cod_eps" length="20"/>
+    <field name="nit" type="string" column="nit" length="12"/>
+    <field name="nombre" type="string" column="nombre" length="60"/>
+    <many-to-many field="paciente" target-entity="Paciente" inversed-by="cliente">
+      <join-table name="afiliacion">
+        <join-columns>
+          <join-column name="cliente_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="paciente_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-many field="cargo" target-entity="Cargo" mapped-by="cliente"/>
+    <many-to-many field="sede" target-entity="Sede" mapped-by="cliente"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

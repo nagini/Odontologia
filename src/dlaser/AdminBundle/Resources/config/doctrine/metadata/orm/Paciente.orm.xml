@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Paciente" table="paciente">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="tipoId" type="string" column="tipo_id" length="2"/>
+    <field name="identificacion" type="string" column="identificacion" length="13"/>
+    <field name="priNombre" type="string" column="pri_nombre" length="30"/>
+    <field name="segNombre" type="string" column="seg_nombre" length="30"/>
+    <field name="priApellido" type="string" column="pri_apellido" length="30"/>
+    <field name="segApellido" type="string" column="seg_apellido" length="30"/>
+    <field name="fN" type="datetime" column="f_n"/>
+    <field name="sexo" type="string" column="sexo" length="1"/>
+    <field name="depto" type="integer" column="depto"/>
+    <field name="mupio" type="integer" column="mupio"/>
+    <field name="direccion" type="string" column="direccion" length="60"/>
+    <field name="zona" type="string" column="zona" length="1"/>
+    <field name="telefono" type="string" column="telefono" length="7"/>
+    <field name="movil" type="string" column="movil" length="10"/>
+    <field name="email" type="string" column="email" length="200"/>
+    <field name="emailalterno" type="string" column="emailAlterno" length="200"/>
+    <field name="rango" type="string" column="rango" length="1"/>
+    <field name="tipoAfi" type="string" column="tipo_afi" length="1"/>
+    <many-to-many field="cliente" target-entity="Cliente" mapped-by="paciente"/>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

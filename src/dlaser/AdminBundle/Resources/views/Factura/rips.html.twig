@@ -1,0 +1,81 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Generar RIPS{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+
+<form action="{{ path('factura_rips_files') }}" onSubmit="return confirm('Seguro de querer generar el reporte?');" method="post">
+    <fieldset>
+    	<legend>Datos de los RIPS</legend>
+
+    <div>
+    	<label for="sede">Sede:</label>
+    	<select id="sede" name="sede">
+    	    <option value="">Todas las sedes</option>
+    	    {% for sede in sedes %}
+      			<option value="{{ sede.id }}">{{ sede.nombre }}</option>
+       		{% endfor %}
+      	</select>
+    </div>
+    
+    <div>
+    	<label for="cliente">Cliente:</label>
+    	<select id="cliente" name="cliente">
+    	    <option value="">Seleccione un cliente</option>
+    	    {% for cliente in clientes %}
+      			<option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+       		{% endfor %}
+      	</select>
+    </div>
+    
+    <div>
+    	<label for="f_inicio">Desde:</label>
+    	    <input type="date" name="f_inicio" id="f_inicio" />
+    	    <span>(DD/MM/AAAA)</span>
+    </div>
+    
+    <div>
+    	<label for="f_fin">Hasta:</label>
+    	    <input type="date" name="f_fin" id="f_fin" />
+    	    <span>(DD/MM/AAAA)</span>
+    </div>
+    
+    <div>
+    	<label for="factura">No. Factura:</label>
+    	    <input type="text" name="factura" id="factura" />
+    </div>
+    
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Generar</span>
+    </button>
+    
+</form>
+	      		
+{% endblock %}

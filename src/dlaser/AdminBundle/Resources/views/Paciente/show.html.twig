@@ -1,0 +1,142 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Detalles del paciente{% endblock %}  
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+    
+  
+
+{% block cuerpo %}
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Tipo de identificación</th>
+                <td>{{ paciente.tipoId }}</td>
+            </tr>
+            <tr>
+                <th>Identificación</th>
+                <td>{{ paciente.identificacion }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ paciente.priNombre }} {{ paciente.segNombre }} {{ paciente.priApellido }} {{ paciente.segApellido }}</td>
+            </tr>
+            <tr>
+                <th>Fecha de nacimiento</th>
+                <td>{{ paciente.fN|date('d-m-Y') }}</td>
+            </tr>
+            <tr>
+                <th>Sexo</th>
+                <td>{{ paciente.sexo }}</td>
+            </tr>
+            <tr>
+                <th>Ciudad</th>
+                <td>{{ paciente.mupio }}</td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td>{{ paciente.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Zona</th>
+                <td>{{ paciente.zona }}</td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>{{ paciente.telefono }}</td>
+            </tr>
+            <tr>
+                <th>Movil</th>
+                <td>{{ paciente.movil }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ paciente.email }}</td>
+            </tr>
+            <tr>
+                <th>Email alterno</th>
+                <td>{{ paciente.emailalterno }}</td>
+            </tr>
+            <tr>
+                <th>Rango</th>
+                <td>{{ paciente.rango }}</td>
+            </tr>
+            <tr>
+                <th>Tipo afiliado</th>
+                <td>
+                    {% if(paciente.tipoAfi == "C") %}
+                        Cotizante
+                    {% else %}
+                        Beneficiario
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <a href="{{ path('paciente_edit', { 'id': paciente.id }) }}" class="button left"><span class="label">Modificar paciente</span></a>
+    <a href="{{ path('paciente_list',{'char':'A'}) }}" class="button middle"><span class="label">Regresar al listado</span></a>
+    
+    <h2>Aseguradoras asociadas</h2>
+    
+    <form action="{{ path('afiliacion_save', { 'paciente': paciente.id }) }}" method="post" {{ form_enctype(form) }}>
+        <fieldset>
+        	<legend>Datos de la aseguradora</legend>
+        	{{ form_widget(form) }}
+        </fieldset>
+        
+        <button class="action blue" type="submit">
+            <span class="label">Crear</span>
+        </button>        
+    </form>
+    
+    <br /><br /><br /><br />  
+    
+    <table>
+        <caption>Registro de aseguradoras asociadas</caption>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nit</th>
+                <th>Nombre</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for afiliacion in afiliaciones %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ afiliacion.cliente.nit }}</td>
+                <td>{{ afiliacion.cliente.nombre }}</td>
+                <td><a class="button" href="{{ path('afiliacion_delete', { 'paciente': afiliacion.paciente.id, 'cliente': afiliacion.cliente.id}) }}" title="Eliminar"><span class="icon icon186"></span></a></td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="4">No tenemos asociaciones creadas.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

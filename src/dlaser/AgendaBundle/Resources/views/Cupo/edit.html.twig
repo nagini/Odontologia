@@ -1,0 +1,446 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Modificar reserva{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+{% block cuerpo %}
+
+<form action="{{ path('cupo_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <fieldset>
+    	 {{ form_errors(edit_form) }}
+            
+        <div id="ajaxMsg"></div>
+        
+        <div>
+            {{ form_label(edit_form.sede) }}
+            {{ form_errors(edit_form.sede) }}
+            {{ form_widget(edit_form.sede) }}
+        </div>
+        
+        <div>
+            {{ form_label(edit_form.paciente) }}
+            {{ form_errors(edit_form.paciente) }}
+            {{ form_widget(edit_form.paciente) }}
+            <a class="button" id="btnAjax" href="#" title="Consultar"><span class="icon icon198"></span></a>
+        </div>
+        
+        <div id="infoPaciente" style="display:none;">
+            <label for="nombre">Nombre</label>
+            <span id="nombre"></span><br /><br />
+        </div>        
+                      
+            {{ form_rest(edit_form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Modificar</span>
+    </button>    
+</form>
+{% endblock %}
+{% block javascripts %}
+
+<script type="text/javascript">
+
+    var idpaciente = "";
+
+    function buscarCargo(cliente, sede){
+        
+    	var url="{{ path('cargo_buscar') }}"; 	
+        
+        $.post(url,{
+               cliente: cliente,
+               sede: sede
+        },function(data){
+            if(data.responseCode==200 ){
+
+                $("#ajaxMsg").empty();
+
+        		var select = $('#Cupo_cargo');
+        		if(select.prop) {
+        		  var options = select.prop('options');
+        		}
+        		else {
+        		  var options = select.attr('options');
+        		}
+        		$('option', select).remove();
+
+        		options[options.length] = new Option('Seleccione actividad', '');
+
+        		$.each(data.cargo, function(val, text) {
+        		    options[options.length] = new Option(text, val);
+        		});
+        		
+        		select.val('{{ entity.cargo.id }}');
+        		                    
+            }
+            else if(data.responseCode==400){
+
+            	$('#Cupo_cargo').empty();
+            	$('#Cupo_agenda').empty();
+            	$('#Cupo_hora').empty();            	            	
+            	$('#ajaxMsg').html(data.msg);
+                $('#ajaxMsg').css("color","red");
+            }
+            else{
+        	    alert("Ha ocurrido un error en el sistema.");
+            }
+        });    	
+    }
+
+    function buscarPaciente(){
+    	var parametro = $("#Cupo_paciente").val();
+
+        $("#nombre").empty();
+        $("#Cupo_cliente").empty();
+        $("#Cupo_cargo").empty();
+        $("#Cupo_agenda").empty();
+        $("#Cupo_hora").empty();            
+
+        if($.isNumeric(parametro)){                
+
+            var url="{{ path('paciente_buscar') }}";
+
+            $.post(url,{
+                   id: parametro
+            },function(data){
+                if(data.responseCode==200 ){
+
+                    idpaciente = data.id;
+                    
+                	$('#nombre').append(document.createTextNode(data.nombre));
+            		$('#infoPaciente').css("display","block");
+
+            		var select = $('#Cupo_cliente');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+
+            	    if(data.cliente){
+            	    	options[options.length] = new Option('Seleccione aseguradora', '');
+                	}else{
+                		options[options.length] = new Option('--', '');
+                    }            	        
+
+            		$.each(data.cliente, function(val, text) {
+            		    options[options.length] = new Option(text, val);
+            		});
+            		
+            		select.val('{{ entity.cliente }}');           		                    
+                }
+                else if(data.responseCode==400){
+                	$("#nombre").empty();
+                    $('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });
+
+            return false;
+        }else{
+            alert("Por favor ingrese un valor valido.")
+        }
+    }
+
+    function buscarAgenda(cliente, sede, cargo, agenda){
+
+    	var url="{{ path('agenda_buscar') }}";
+
+    	$("#Cupo_agenda").empty();
+    	$("#Cupo_hora").empty();
+
+        $.post(url,{
+               cliente: cliente,
+               sede: sede,
+               cargo: cargo
+        },function(data){
+            if(data.responseCode==200 ){
+
+        		var select = $('#Cupo_agenda');
+        		if(select.prop) {
+        		  var options = select.prop('options');
+        		}
+        		else {
+        		  var options = select.attr('options');
+        		}
+        		$('option', select).remove();
+
+        		options[options.length] = new Option('Seleccione agenda', '');
+
+        		$.each(data.agenda, function(val, text) {
+        		    options[options.length] = new Option(text, val);
+        		});
+
+        		select.val(agenda);
+
+            }
+            else if(data.responseCode==400){
+            	$('#ajaxMsg').html(data.msg);
+                $('#ajaxMsg').css("color","red");
+            }
+            else{
+        	    alert("Ha ocurrido un error en el sistema.");
+            }
+        });
+    }
+
+    function buscarCupo(cargo, agenda, cupo){
+
+    	var url="{{ path('cupo_buscar') }}";
+
+        $.post(url,{
+               cargo: cargo,
+               agenda: agenda,
+               paciente: idpaciente,
+               cupo: cupo
+        },function(data){
+            if(data.responseCode==200 ){
+
+        		var select = $('#Cupo_hora');
+        		if(select.prop) {
+        		  var options = select.prop('options');
+        		}
+        		else {
+        		  var options = select.attr('options');
+        		}
+        		$('option', select).remove();
+
+        		options[options.length] = new Option('Seleccione agenda', '');
+
+        		if(cupo) options[options.length] = new Option('{{ entity.hora | date('H:i') }}', '{{ entity.id }}');
+
+        		$.each(data.cupo, function(val, text) {
+        			options[options.length] = new Option(text, data.fecha+' '+text+':00');
+        		});
+        		
+        		select.val(cupo);
+        		                    
+            }
+            else if(data.responseCode==400){
+            	$('#ajaxMsg').html(data.msg);
+                $('#ajaxMsg').css("color","red");
+            }
+            else{
+        	    alert("Ha ocurrido un error en el sistema.");
+            }
+        });
+
+    }
+
+    $(document).ready(function() {
+        idpaciente = {{ entity.paciente.id }};
+        $("#Cupo_sede").val('{{ entity.agenda.sede.id }}');
+        $("#Cupo_paciente").val('{{ entity.paciente.identificacion }}');
+
+        buscarPaciente();
+        buscarCargo({{ entity.cliente }}, {{ entity.agenda.sede.id }});
+        buscarAgenda({{ entity.cliente }}, {{ entity.agenda.sede.id }}, {{ entity.cargo.id }}, {{ entity.agenda.id }});
+        buscarCupo({{ entity.cargo.id }}, {{ entity.agenda.id }}, {{ entity.id }});
+        $("#Cupo_nota").val('{{ entity.nota }}');
+
+        
+
+        $("#btnAjax").click(function(){
+
+            var parametro = $("#Cupo_paciente").val();
+
+            $("#nombre").empty();
+            $("#cliente").empty();
+            $("#Cupo_cargo").empty();
+            $("#Cupo_agenda").empty();
+            $("#Cupo_hora").empty();            
+
+            if($.isNumeric(parametro)){                
+
+                var url="{{ path('paciente_buscar') }}";
+    
+                $.post(url,{
+                       id: parametro
+                },function(data){
+                    if(data.responseCode==200 ){
+
+                        idpaciente = data.id;
+
+                    	$('#nombre').append(document.createTextNode(data.nombre));
+                		$('#infoPaciente').css("display","block");
+    
+                		var select = $('#Cupo_cliente');
+                		if(select.prop) {
+                		  var options = select.prop('options');
+                		}
+                		else {
+                		  var options = select.attr('options');
+                		}
+                		$('option', select).remove();
+
+                	    if(data.cliente){
+                	    	options[options.length] = new Option('Seleccione aseguradora', '');
+                    	}else{
+                    		options[options.length] = new Option('--', '');
+                        }            	        
+    
+                		$.each(data.cliente, function(val, text) {
+                		    options[options.length] = new Option(text, val);
+                		});
+                		
+                		select.val('');                		                    
+                    }
+                    else if(data.responseCode==400){
+                    	$("#nombre").empty();
+                        $('#ajaxMsg').html(data.msg);
+                        $('#ajaxMsg').css("color","red");
+                    }
+                    else{
+                	    alert("Ha ocurrido un error en el sistema.");
+                    }
+                });
+
+                return false;
+            }else{
+                alert("Por favor ingrese un valor valido.")
+            }
+       });
+
+        $("#Cupo_sede").change(function(){
+            
+            var sede = $("#Cupo_sede").val();
+            var cliente = $("#cliente").val();
+            
+        	if($.isNumeric(cliente) && $.isNumeric(sede)){
+            	buscarCargo();
+        	}
+        });
+
+        $("#Cupo_cliente").change(function(){
+        	buscarCargo($("#Cupo_cliente").val(), $("#Cupo_sede").val());
+        });
+
+        $("#Cupo_cargo").change(function(){
+
+        	var url="{{ path('agenda_buscar') }}";
+
+        	$("#Cupo_agenda").empty();
+        	$("#Cupo_hora").empty();
+
+        	var cliente = $("#Cupo_cliente").val();
+        	var sede = $("#Cupo_sede").val();
+        	var cargo = $("#Cupo_cargo").val();
+            
+            $.post(url,{
+                   cliente: cliente,
+                   sede: sede,
+                   cargo: cargo
+            },function(data){
+                if(data.responseCode==200 ){
+
+            		var select = $('#Cupo_agenda');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+
+            		options[options.length] = new Option('Seleccione agenda', '');
+
+            		$.each(data.agenda, function(val, text) {
+            		    options[options.length] = new Option(text, val);
+            		});
+            		
+            		select.val('');
+            		                    
+                }
+                else if(data.responseCode==400){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });
+            
+        });
+
+        $("#Cupo_agenda").change(function(){
+
+        	var url="{{ path('cupo_buscar') }}";
+
+        	var cargo = $("#Cupo_cargo").val();
+        	var agenda = $("#Cupo_agenda").val();
+            
+            $.post(url,{
+                   cargo: cargo,
+                   agenda: agenda,
+                   paciente: idpaciente
+            },function(data){
+                if(data.responseCode==200 ){
+
+            		var select = $('#Cupo_hora');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+
+            		options[options.length] = new Option('Seleccione hora', '');            		
+
+            		$.each(data.cupo, function(val, text) {
+            		    options[options.length] = new Option(text, data.fecha+' '+text+':00');
+            		});
+            		
+            		select.val('');
+            		                    
+                }
+                else if(data.responseCode==400){
+
+                	var select = $('#Cupo_hora');
+            		if(select.prop) {
+            		  var options = select.prop('options');
+            		}
+            		else {
+            		  var options = select.attr('options');
+            		}
+            		$('option', select).remove();
+                    
+                	$('#ajaxMsg').html('');
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });
+            
+        });       
+    });
+</script>    
+{% endblock %}

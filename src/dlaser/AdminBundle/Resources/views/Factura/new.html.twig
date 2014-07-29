@@ -1,0 +1,76 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Nueva admisión{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+{% block cuerpo %}
+
+<form action="{{ path('factura_save', {'cupo' : cupo.id}) }}" onsubmit="return confirm('Seguro que desea crear la factura?')"method="post" {{ form_enctype(form) }}>
+    <fieldset>
+    	<legend>Datos de la admisión</legend>
+    	
+    	<div class="grid_11">
+    	   <label>Identificación :</label>
+    	        <span>{{ cupo.paciente.tipoId }} - {{ cupo.paciente.identificacion }}</span><br />
+    	        
+    	    <hr />
+    	    
+    	    <label>Paciente :</label>
+    	        <span>{{ cupo.paciente.priNombre }} {{ cupo.paciente.segNombre }} {{ cupo.paciente.priApellido }} {{ cupo.paciente.segApellido }}</span>
+    	    
+    	    <hr />
+    	    
+    	    <label>Cliente :</label>
+    	    	<span>{{ cliente.nombre }}</span>
+    	    
+    	    <hr />
+    	    
+    	    <label>Actividad :</label>
+    	        <span>{{ cupo.cargo.cups }} - {{ cupo.cargo.nombre }}</span><br />
+    	        
+    	    <hr />
+    	    
+    	    <label>Valor :</label>
+    	        <span>
+    	            ${% if actividad %}
+                        {{ actividad }}
+                     {% else %}   
+                                           
+                     	{{ (cupo.cargo.valor + (cupo.cargo.valor * contrato.porcentaje)) | number_format(0, '.', ',') }}
+                     {% endif %}</span>
+                     
+            <hr />
+    	        
+    	</div>
+    	
+    	{{ form_widget(form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Crear</span>
+    </button>
+    
+</form>
+{% endblock %}

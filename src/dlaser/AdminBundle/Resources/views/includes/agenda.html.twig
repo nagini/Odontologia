@@ -1,0 +1,36 @@
+<header>
+	{% if is_granted('ROLE_ADMIN') %}
+		<nav id="menu_main" class="grid_11">
+	        <ul>
+	            <li><a href="{{ path('empresa_list') }}" class="bundle">Parametrizar</a></li>
+	            <li><a href="{{ path('agenda_list') }}" class="bundle sel">Agenda</a></li>
+	            <li><a href="{{ path('factura_search') }}" class="bundle">Facturar</a></li>
+	            <li><a href="{{ path('usuario_list') }}" class="bundle">Usuarios</a></li>
+	            <li><a href="{{ path('th_buscar') }}" class="bundle">Informes</a></li>       
+	         </ul>
+	     </nav>
+	{% elseif is_granted('ROLE_MEDICO') %}
+		<nav id="menu_main" class="grid_11">
+	        <ul>
+	            <li><a href="{{ path('agenda_list') }}" class="bundle sel">Agenda</a></li>
+	            <li><a href="{{ path('th_buscar') }}" class="bundle">Informes</a></li>	            
+	         </ul>
+	     </nav>
+	{% elseif is_granted('ROLE_AUX') %}
+		<nav id="menu_main" class="grid_11">
+	        <ul>
+	            <li><a href="{{ path('agenda_aux_list') }}" class="bundle sel">Agenda</a></li>
+	            <li><a href="{{ path('cupo_new') }}" class="bundle">Reserva</a></li>
+	            <li><a href="{{ path('factura_search') }}" class="bundle">Facturar</a></li>
+	            <li><a href="{{ path('th_buscar') }}" class="bundle">Informes</a></li>	            
+	         </ul>
+	     </nav>		
+	{% endif %}
+
+    
+    <aside id="info_sesion" class="grid_5">
+        <div id="username"><a href="#"> {{ app.user }} </a></div>
+        
+        <div id="logout"><a href="{{ path('logout') }}" class="button right"><span class="icon icon151"></span></a></div>
+    </aside>
+</header>

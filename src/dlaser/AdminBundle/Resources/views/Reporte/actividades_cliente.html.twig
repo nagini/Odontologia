@@ -1,0 +1,124 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de actividades realizadas a un cliente{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+	<strong>Sede:</strong>
+		<span>{{ sede.nombre }}</span><br />
+		
+	<label>Cliente:</label>
+		<span>{{ cliente.nombre }}</span><br />
+		
+	<label>Desde:</label>
+		<span>{{ f_i }}</span><br />
+		
+	<label>Hasta:</label>
+		<span>{{ f_f }}</span>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tipo</th>
+                <th>Identificación</th>
+                <th>Fecha</th>
+                <th>Orden</th>
+                <th>Paciente</th>
+                <th>Actividad</th>
+                <th>Valor</th>
+                <th>Copago</th>
+                <th>Estado</th>
+                <th>Soporte</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% set label_cargo = {'890202': 'CONSULTA', '881234': 'ECO', '895001': 'HOLTER', '894102': 'ESFUERZO', '895101': 'EKG', '920407': 'MIBI', '920408': 'DIPI', '893805': 'ESPIRO', '881236': 'ECOSTRESS', '896100': 'MAPA', '933600': 'R.C'} %}
+        {% set ruta_cargo = {'890202': 'hc_imprime', '881234': 'eco_imprimir', '895001': 'th_imprimir', '894102': 'te_imprimir', '895101': '', '920407': 'perfusion_imprimir', '920408': 'dipi_imprimir', '893805': '', '881236': 'ecostres', '896100': 'mapa_imprimir', '933600': ''} %}
+        
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.tipoId }}</td>
+                <td>{{ entity.identificacion }}</td>
+                <td>{{ entity.fecha|date('d-m-Y') }}</td>
+                <td>{{ entity.autorizacion }}</td>
+                <td><a href="{{ path('paciente_edit', { 'id': entity.paciente }) }}" target="popup" title="Modificar admisión" onClick="popup(this.href,750,600); return false;">{{ entity.priNombre|capitalize }} {{ entity.segNombre|capitalize }} {{ entity.priApellido|capitalize }} {{ entity.segApellido|capitalize }}</a></td>
+                <td>{{ label_cargo[entity.cups] }}</td>
+                <td>{{ entity.valor }}</td>
+                <td>{{ entity.copago }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>
+                	{% if (entity.estado == 'I') %}
+                		{% if (entity.cups == '890202') %}
+                			<a class="button" href="{{ path('hc_imprime', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '881234') %}
+                			<a class="button" href="{{ path('eco_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '895001') %}
+                			<a class="button" href="{{ path('th_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '894102') %}
+                			<a class="button" href="{{ path('te_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '920407') %}
+                			<a class="button" href="{{ path('perfusion_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '920408') %}
+                			<a class="button" href="{{ path('dipi_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '881236') %}
+                			<a class="button" href="{{ path('ecostres_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% elseif (entity.cups == '896100') %}
+                			<a class="button" href="{{ path('mapa_imprimir', { 'factura': entity.id }) }}" target="_blank" title="Imprimir soporte"><span class="icon icon153"></span></a>
+                		{% else %}
+                			
+                		{% endif %}
+                	{% endif %}
+                </td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="10">No tenemos actividades realizadas en este periodo de tiempo.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="" class="button left"><span class="label">Imprimir</span></a>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+
+	function popup(url,ancho,alto) {
+		var posicion_x; 
+		var posicion_y; 
+
+		posicion_x=(screen.width/2)-(ancho/2); 
+		posicion_y=(screen.height/2)-(alto/2); 
+
+		window.open(url, "", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=yes,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	}
+</script>
+{% endblock %}

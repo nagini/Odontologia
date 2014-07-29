@@ -1,0 +1,87 @@
+{% extends "::simple.html.twig" %}
+
+{% block stylesheets %}
+<style>
+	body{font-size: 31px;}
+
+	table {
+	  clear: both;
+	  margin-bottom: 2em;
+	  width: 100%;
+	}
+
+	th {
+	  background-color: #C6C6C6;
+	  text-align: center;
+	}
+	
+	tr, th, td {
+	  border: 1px solid #C6C6C6;
+	  border-width: 1px 0;
+	  padding: .5em .25em;
+	  font-size: 30px;
+	}
+</style>    
+{% endblock %}
+
+{% block space %}
+	<h1><p align="center">Cierre de caja {{ date('now')|date('d-m-Y') }} Sede {{ sede.nombre }}</p></h1>
+{% endblock %}
+
+{% block body %}
+ <table>
+ 	<thead>
+		<tr>
+	    	<th>Recibo</th>
+	        <th>Actividad</th>
+	        <th>Autorización</th>
+	        <th>Identificación</th>
+	        <th>Paciente</th>
+	        <th>Cliente</th>
+	        <th>Precio</th>
+	        <th>Copago</th>
+	        <th>Descto.</th>
+	        <th>Estado</th>          
+		</tr>  
+	</thead>
+    <tbody>
+    	<!-- la suma de los cliente se esta manejando por medio de los id de los clientes q se encuentran creados en la base de datos.-->
+    	{% set particulares = {'4': 'PREVISER', '3': 'PARTICULAR 3', '20': 'PARTICULAR 1', '22': 'PARTICULAR 2'} %}
+		{% set copago = 0 %}
+		{% set particular = 0 %}
+		
+		{% for entities in entity %}
+		
+		{% if entities.cliente in [4, 3] %}
+			{% set particular = particular + entities.valor %}
+		{% endif %}
+		
+		{% set copago = copago + entities.copago %}
+        	<tr>
+            	<td>{{ entities.id }}</td>
+            	<td>{{ entities.cups }}</td>
+            	<td>{{ entities.autorizacion }}</td>
+            	<td>{{ entities.identificacion }}</td>
+                <td>{{ entities.priNombre }} {{ entities.segNombre }} {{ entities.priApellido }} {{ entities.segApellido }}</td>
+                <td>{{ entities.nombre }}</td>
+                <td>{{ entities.valor }}</td>
+                <td>{{ entities.copago }}</td>
+                <td>{{ entities.descuento }}</td>
+                <td>{{ entities.estado }}</td>
+			</tr>
+        {% endfor %}
+        <tr>
+        	<td colspan="3">Copagos</td>
+        	<td colspan="7">${{ copago|number_format(0) }}</td>
+        </tr>
+        <tr>
+        	<td colspan="3">Particulares</td>
+        	<td colspan="7">${{ particular|number_format(0) }}</td>
+        </tr>
+        <tr>
+        	<td colspan="3">Total</td>
+        	<td colspan="7">${{ (particular+copago)|number_format(0) }}</td>
+        </tr>        
+	</tbody>
+</table>	
+{% endblock %}

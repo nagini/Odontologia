@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Medicamento" table="medicamento">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="principioActivo" type="string" column="principio_activo" length="200"/>
+    <field name="concentracion" type="string" column="concentracion" length="10"/>
+    <field name="presentacion" type="string" column="presentacion" length="30"/>
+    <field name="dosisDia" type="integer" column="dosis_dia"/>
+    <field name="tiempo" type="integer" column="tiempo"/>
+    <field name="diasTratamiento" type="integer" column="dias_tratamiento"/>
+    <field name="pos" type="boolean" column="pos"/>
+    <many-to-many field="hc" target-entity="Hc" inversed-by="medicamento">
+      <join-table name="hc_medicamento">
+        <join-columns>
+          <join-column name="medicamento_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="hc_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+    <many-to-one field="usuario" target-entity="Usuario" orphan-removal="">
+      <join-columns>
+        <join-column name="usuario_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

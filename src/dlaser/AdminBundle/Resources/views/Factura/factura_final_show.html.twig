@@ -1,0 +1,71 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Factura de venta{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+<table>
+        <tbody>
+        	<tr>
+            	<th><b>Factura No.</b></th>
+                <td>{{entity.id}}</td>
+                
+            </tr>
+            <tr>
+        		<th><b>Fecha:</b></th>
+                <td>{{entity.fecha | date('d-m-Y')}}</td>
+            </tr>
+            <tr>
+        		<th><b>Cliente:</b></th>
+                <td>{{entity.cliente.nombre}}</td>
+            </tr>    
+            <tr>
+                <th><b>Nit:</b></th>
+                <td>{{entity.cliente.nit}}</td>
+            </tr>
+            <tr>
+            	<th><b>Subtotal:</b></th>
+                <td>{{ entity.subtotal }}</td>
+            </tr>
+            <tr>
+            	<th><b>Iva:</b></th>
+                <td>{{entity.iva}}</td>
+            </tr>
+            <tr>
+            	<th><b>Total:</b></th>
+                <td>{{(entity.subtotal+entity.iva)|number_format(0)}}</td>
+            </tr>            
+            <tr>
+            	<th><b>Nota:</b></th>
+                <td>{{entity.nota}}</td>
+             </tr>
+        </tbody>
+    </table>
+
+<a href="{{ path('factura_final_imprimir', { 'id': entity.id }) }}" class="button blue"><span class="label">Imprimir</span></a>
+<a href="{{ path('factura_final_rips', { 'id': entity.id }) }}" class="button blue"><span class="label">Generar RIPS</span></a>
+
+{% endblock %}

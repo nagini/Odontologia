@@ -1,0 +1,78 @@
+{% extends "::simple.html.twig" %}
+
+{% block stylesheets %}
+<style>
+	body{font-size: 31px;}
+
+	table {
+	  clear: both;
+	  margin-bottom: 2em;
+	  width: 100%;
+	}
+
+	th {
+	  background-color: #C6C6C6;
+	  text-align: center;
+	}
+	
+	tr, th, td {
+	  border: 1px solid #C6C6C6;
+	  border-width: 1px 0;
+	  padding: .5em .25em;
+	  font-size: 30px;
+	}
+</style>    
+{% endblock %}
+
+{% set label_mes = {'1': 'ENERO', '2': 'FEBRERO', '3': 'MARZO', '4': 'ABRIL', '5': 'MAYO', '6': 'JUNIO', '7': 'JULIO', '8': 'AGOSTO', '9': 'SEPTIEMBRE', '10': 'OCTUBRE', '11': 'NOVIEMBRE', '12': 'DICIEMBRE'} %}
+
+{% block space %}
+	<p align="center">{{ cliente.nombre }}<br />DEBE A: <br />{{ empresa.nombre }}<br /> NIT {{ empresa.nit }}<br /> POR SERVICIOS PRESTADOS EN CARDIOLOGIA DURANTE EL MES DE {{ label_mes[f_f|date('m')] }} DE {{ date('now')|date('Y') }}</p>
+{% endblock %}
+
+{% block body %}
+
+	<table>
+		<tbody>
+			<tr>
+				<td width="40">Tipo</td>
+				<td width="90">Identificación</td>
+				<td width="70">Fecha</td>
+				<td width="100">Autorización</td>
+				<td width="190">Paciente</td>
+				<td width="90">Cargo</td>
+				<td width="50">Valor</td>
+				<td width="50">Copago</td>
+			</tr>
+			
+        {% set label_cargo = {'890202': 'CONSULTA', '881234': 'ECO', '895001': 'HOLTER', '894102': 'ESFUERZO', '895101': 'EKG', '920407': 'MIBI', '920408': 'DIPI', '893805': 'ESPIRO', '881236': 'ECOSTRESS', '896100': 'MAPA', '933600': 'R.C'} %}
+        
+        {% set copago = 0 %}
+		{% set valor = 0 %}
+        
+        {% for entity in entities %}
+        
+        {% set valor = valor + entity.valor %}
+        {% set copago = copago + entity.copago %}
+            <tr>
+                <td width="40">{{ entity.tipoId }}</td>
+                <td width="90">{{ entity.identificacion }}</td>
+                <td width="70">{{ entity.fecha|date('d-m-Y') }}</td>
+                <td width="100">{{ entity.autorizacion }}</td>
+                <td width="190">{{ entity.priNombre|capitalize }} {{ entity.segNombre|capitalize }} {{ entity.priApellido|capitalize }} {{ entity.segApellido|capitalize }}</td>
+                <td width="90">{{ label_cargo[entity.cups] }}</td>
+                <td width="50">{{ entity.valor }}</td>
+                <td width="50">{{ entity.copago }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td>No tenemos actividades realizadas en este periodo de tiempo.</td>
+         	</tr>
+        {% endfor %}
+        	<tr>
+        		<td colspan="8"><br /><br />TOTAL: <b>${{ (valor-copago)|number_format(0) }}</b><br />Favor consignar en Bancolombia cuenta de ahorros No.84848881871 A Nombre de: Centro Cardiologico del Valle. - NIT. 900260604-8</td>
+        	</tr>        
+        </tbody>
+    </table>
+    
+{% endblock %}

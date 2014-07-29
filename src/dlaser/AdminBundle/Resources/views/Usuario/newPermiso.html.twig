@@ -1,0 +1,69 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Asignar los permisos de las sedes al usuario {{entity.nombre}}{% endblock %}
+
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+    
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th>Accíon</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for permiso in permisos %}            
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('sede_show', {'id':permiso.id}) }}">{{ permiso.nombre }}</a></td>
+                <td>{{ permiso.ciudad }}</td>
+                <td>               
+    			<a><a href="{{ path('permiso_delete', { 'usuario': entity.id, 'sede': permiso.id }) }}" class="button left"><span class="label">Quitar</span></a>
+    			</td>
+            </tr>
+        {% endfor %} 
+       
+       {% for sede in sedes %}  
+            <tr>            
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('sede_show', {'id':sede.id}) }}">{{ sede.nombre }}</a></td>
+                <td>{{ sede.ciudad }}</td>
+                <td>                    			
+    			<a href="{{ path('permiso_save', { 'usuario': entity.id, 'sede': sede.id }) }}" class="button left"><span class="label">Asignar</span></a>
+    			</td>   			
+            </tr>
+       {% endfor %}
+      </tbody>
+    </table>
+    
+    <a href="{{ path('usuario_show', { 'id': entity.id }) }}" class="button left"><span class="label">Regresar al usuario</span></a>
+{% endblock %}
+    

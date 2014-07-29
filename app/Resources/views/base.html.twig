@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        
+        <title>Odontologia::{% block title %}{% endblock %}</title>
+        
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+
+	{% block stylesheets %}
+        	<link href="{{ asset('bundles/dlaser/css/reset.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/960.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/text.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/global.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/css3-buttons.css') }}" rel="stylesheet" type="text/css" media="screen" />
+          	<link href="{{ asset('bundles/dlaser/css/menu.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/rastro.css') }}" rel="stylesheet" type="text/css" />
+          	<link href="{{ asset('bundles/dlaser/css/checkbox.css') }}" rel="stylesheet" type="text/css" />
+        {% endblock %}
+        
+        <script src="{{ asset('bundles/dlaser/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('bundles/dlaser/js/jquery.tools.min.js') }}"></script>
+    </head>
+    <body>    	
+    	{% block head %}{% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}	 	
+        
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

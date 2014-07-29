@@ -1,0 +1,55 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de pacientes{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Identificación</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('paciente_show', {'id':entity.id}) }}">{{ entity.identificacion }}</a></td>
+                <td>{{ entity.priNombre }} {{ entity.segNombre }} {{ entity.priApellido }} {{ entity.segApellido }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="3">No tenemos pacientes creados.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{{ path('paciente_new') }}" class="button left"><span class="label">Nuevo paciente</span></a>
+{% endblock %}

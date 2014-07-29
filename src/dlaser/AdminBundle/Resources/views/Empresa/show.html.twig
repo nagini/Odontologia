@@ -1,0 +1,75 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Detalles de la empresa{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nit</th>
+                <td>{{ entity.nit }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <a href="{{ path('empresa_edit', { 'id': entity.id }) }}" class="button left"><span class="label">Modificar empresa</span></a>
+    <a href="{{ path('empresa_list') }}" class="button middle"><span class="label">Regresar al listado</span></a>
+    
+    <h2>Sedes de la empresa</h2>
+
+    
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sede in sedes %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('sede_show', {'id':sede.id}) }}">{{ sede.nombre }}</a></td>
+                <td>{{ sede.ciudad }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="3">No tenemos sedes creadas.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{{ path('sede_new', { 'id': entity.id }) }}" class="button left"><span class="label">Crear sede</span></a>
+{% endblock %}

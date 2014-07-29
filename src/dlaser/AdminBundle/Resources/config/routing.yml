@@ -1,0 +1,382 @@
+#************** Empresa ***************#
+
+empresa_list:
+    pattern:  /empresa/list
+    defaults: { _controller: AdminBundle:Empresa:list }
+    
+empresa_show:
+    pattern:  /empresa/{id}/show
+    defaults: { _controller: AdminBundle:Empresa:show }
+
+empresa_new:
+    pattern:  /empresa/new
+    defaults: { _controller: AdminBundle:Empresa:new }
+
+empresa_save:
+    pattern:  /empresa/save
+    defaults: { _controller: AdminBundle:Empresa:save }
+
+empresa_edit:
+    pattern:  /empresa/{id}/edit
+    defaults: { _controller: AdminBundle:Empresa:edit }
+    
+empresa_update:
+    pattern:  /empresa/{id}/update
+    defaults: { _controller: AdminBundle:Empresa:update }
+
+#************** Sede ***************#
+    
+sede_new:
+    pattern:  /sede/new/{id}
+    defaults: { _controller: AdminBundle:Sede:new }
+    
+sede_save:
+    pattern:  /sede/save/{id}
+    defaults: { _controller: AdminBundle:Sede:save }
+    
+sede_show:
+    pattern:  /sede/{id}/show
+    defaults: { _controller: AdminBundle:Sede:show }
+    
+sede_edit:
+    pattern:  /sede/{id}/edit
+    defaults: { _controller: AdminBundle:Sede:edit }
+    
+sede_update:
+    pattern:  /sede/{id}/update
+    defaults: { _controller: AdminBundle:Sede:update }
+    
+sede_delete:
+    pattern:  /sede/{id}/delete
+    defaults: { _controller: AdminBundle:Sede:delete }
+    
+sede_buscar:
+    pattern:  /sede/buscar
+    defaults: { _controller: AdminBundle:Sede:ajaxSedeUsuario }
+    requirements:
+        _method:  POST
+    
+#************** Usuario ***************#
+
+usuario_list:
+    pattern:  /usuario/list
+    defaults: { _controller: AdminBundle:Usuario:list }
+
+usuario_new:
+    pattern:  /usuario/new
+    defaults: { _controller: AdminBundle:Usuario:new }
+
+usuario_save:
+    pattern:  /usuario/save
+    defaults: { _controller: AdminBundle:Usuario:save }
+
+usuario_show:
+    pattern:  /usuario/{id}/show
+    defaults: { _controller: AdminBundle:Usuario:show }
+    
+usuario_edit:
+    pattern:  /usuario/{id}/edit
+    defaults: { _controller: AdminBundle:Usuario:edit }
+    
+usuario_update:
+    pattern:  /usuario/{id}/update
+    defaults: { _controller: AdminBundle:Usuario:update }
+   
+permiso_new:
+    pattern:  /permiso/{id}/new
+    defaults: { _controller: AdminBundle:Usuario:newPermiso }
+     
+permiso_save:
+    pattern:  /permiso/save/{usuario}/{sede}
+    defaults: { _controller: AdminBundle:Usuario:savePermiso }
+    
+permiso_delete:
+    pattern:  /permiso/delete/{usuario}/{sede}
+    defaults: { _controller: AdminBundle:Usuario:deletePermiso }
+    
+#************** Cliente ***************#
+
+cliente_list:
+    pattern:  /cliente/list
+    defaults: { _controller: AdminBundle:Cliente:list }
+    
+cliente_new:
+    pattern:  /cliente/new
+    defaults: { _controller: AdminBundle:Cliente:new }
+    
+cliente_save:
+    pattern:  /cliente/save
+    defaults: { _controller: AdminBundle:Cliente:save }
+
+cliente_show:
+    pattern:  /cliente/{id}/show
+    defaults: { _controller: AdminBundle:Cliente:show }
+    
+cliente_edit:
+    pattern:  /cliente/{id}/edit
+    defaults: { _controller: AdminBundle:Cliente:edit }
+    
+cliente_update:
+    pattern:  /cliente/{id}/update
+    defaults: { _controller: AdminBundle:Cliente:update }
+    
+#************** Contrato ***************#
+
+contrato_new:
+    pattern:  /contrato/new/{id}
+    defaults: { _controller: AdminBundle:Contrato:new }
+    
+contrato_save:
+    pattern:  /contrato/save/{id}
+    defaults: { _controller: AdminBundle:Contrato:save }
+    
+contrato_list:
+    pattern:  /contrato/list
+    defaults: { _controller: AdminBundle:Contrato:list }
+    
+contrato_show:
+    pattern:  /contrato/{id}/show
+    defaults: { _controller: AdminBundle:Contrato:show }
+    
+contrato_edit:
+    pattern:  /contrato/{id}/edit
+    defaults: { _controller: AdminBundle:Contrato:edit }
+
+contrato_update:
+    pattern:  /contrato/{id}/update
+    defaults: { _controller: AdminBundle:Contrato:update }
+    
+#************** Cargo ***************#
+
+cargo_list:
+    pattern:  /cargo/list
+    defaults: { _controller: AdminBundle:Cargo:list }
+    
+cargo_new:
+    pattern:  /cargo/new
+    defaults: { _controller: AdminBundle:Cargo:new }
+    
+cargo_save:
+    pattern:  /cargo/save
+    defaults: { _controller: AdminBundle:Cargo:save }
+
+cargo_show:
+    pattern:  /cargo/{id}/show
+    defaults: { _controller: AdminBundle:Cargo:show }
+    
+cargo_edit:
+    pattern:  /cargo/{id}/edit
+    defaults: { _controller: AdminBundle:Cargo:edit }
+    
+cargo_update:
+    pattern:  /cargo/{id}/update
+    defaults: { _controller: AdminBundle:Cargo:update }
+    
+cargo_buscar:
+    pattern:  /cargo/buscar
+    defaults: { _controller: AdminBundle:Cargo:ajaxBuscar }
+    requirements:
+        _method:  POST
+
+#************** Actividad ***************#
+
+actividad_new:
+    pattern:  /actividad/new/{id}
+    defaults: { _controller: AdminBundle:Actividad:new }
+    
+actividad_save:
+    pattern:  /actividad/save/{id}
+    defaults: { _controller: AdminBundle:Actividad:save }
+    
+actividad_list:
+    pattern:  /actividad/list
+    defaults: { _controller: AdminBundle:Actividad:list }
+    
+actividad_show:
+    pattern:  /actividad/show/{contrato}/{cargo}
+    defaults: { _controller: AdminBundle:Actividad:show }
+    
+actividad_edit:
+    pattern:  /actividad/edit/{contrato}/{cargo}
+    defaults: { _controller: AdminBundle:Actividad:edit }
+
+actividad_update:
+    pattern:  /actividad/update/{contrato}/{cargo}
+    defaults: { _controller: AdminBundle:Actividad:update }
+    
+#************** Paciente ***************#
+
+paciente_new:
+    pattern:  /paciente/new
+    defaults: { _controller: AdminBundle:Paciente:new }
+    
+paciente_save:
+    pattern:  /paciente/save
+    defaults: { _controller: AdminBundle:Paciente:save }
+    
+paciente_list:
+    pattern:  /paciente/list/{char}
+    defaults: { _controller: AdminBundle:Paciente:list }
+    
+paciente_search:
+    pattern:  /paciente/list/
+    defaults: { _controller: AdminBundle:Paciente:pacisearch }
+    
+paciente_show:
+    pattern:  /paciente/{id}/show
+    defaults: { _controller: AdminBundle:Paciente:show }
+    
+paciente_edit:
+    pattern:  /paciente/{id}/edit
+    defaults: { _controller: AdminBundle:Paciente:edit }
+    options: 
+        expose: true
+
+paciente_update:
+    pattern:  /paciente/{id}/update
+    defaults: { _controller: AdminBundle:Paciente:update }
+    
+municipios:  
+    pattern: /mupio.{_format}/{id}
+    defaults: { _controller: AdminBundle:Paciente:municipios, _format: json}  
+    requirements: { _format: (xml|json), _method: GET }
+    
+paciente_buscar:
+    pattern:  /paciente/buscar
+    defaults: { _controller: AdminBundle:Paciente:ajaxBuscar }
+    requirements:
+        _method:  POST
+    
+#************** Afiliación ***************#
+
+afiliacion_new:
+    pattern:  /afiliacion/new/{paciente}
+    defaults: { _controller: AdminBundle:Afiliacion:new }
+
+afiliacion_save:
+    pattern:  /afiliacion/save/{paciente}
+    defaults: { _controller: AdminBundle:Afiliacion:save }
+    
+afiliacion_delete:
+    pattern:  /afiliacion/delete/{paciente}/{cliente}
+    defaults: { _controller: AdminBundle:Afiliacion:delete }
+    
+afiliacion_ajax_save:
+    pattern:  /afiliacion/ajaxsave
+    defaults: { _controller: AdminBundle:Afiliacion:ajaxSave }
+    requirements:
+        _method:  POST
+    
+#************** Factura ***************#
+
+factura_new:
+    pattern:  /factura/new/{cupo}
+    defaults: { _controller: AdminBundle:Factura:new }
+    options: 
+        expose: true
+    
+factura_save:
+    pattern:  /factura/save/{cupo}
+    defaults: { _controller: AdminBundle:Factura:save }
+    options: 
+        expose: true
+
+factura_show:
+    pattern:  /factura/{id}/show
+    defaults: { _controller: AdminBundle:Factura:show }
+    
+factura_edit:
+    pattern:  /factura/{id}/edit
+    defaults: { _controller: AdminBundle:Factura:edit }
+    
+factura_update:
+    pattern:  /factura/{id}/update
+    defaults: { _controller: AdminBundle:Factura:update }
+
+factura_imprimir:
+    pattern:  /factura/imprimir/{id}
+    defaults: { _controller: AdminBundle:Factura:imprimir }
+   
+factura_search:
+    pattern:  /factura/search
+    defaults: { _controller: AdminBundle:Factura:search }
+    
+factura_buscar:
+    pattern:  /factura/buscar
+    defaults: { _controller: AdminBundle:Factura:ajaxBuscar }
+    requirements:
+        _method:  POST
+        
+factura_arqueo:
+    pattern:  /factura/arqueo
+    defaults: { _controller: AdminBundle:Factura:arqueo }
+    
+factura_arqueo_imprimir:
+    pattern:  /factura/{sede}/imprimirArqueo
+    defaults: { _controller: AdminBundle:Factura:imprimirArqueo }
+    
+factura_cliente_list:
+    pattern:  /factura/cliente/list
+    defaults: { _controller: AdminBundle:Factura:listadoCliente }
+    
+factura_cliente_actividades:
+    pattern:  /factura/cliente/actividades
+    defaults: { _controller: AdminBundle:Factura:actividadesCliente }
+    
+factura_cobro_imprimir:
+    pattern:  /factura/cobro/imprimir
+    defaults: { _controller: AdminBundle:Factura:imprimirCtaCobro }
+    requirements:
+        _method:  POST
+        
+factura_admision_search:
+    pattern:  /factura/admision/search
+    defaults: { _controller: AdminBundle:Factura:buscarFactura }
+    
+factura_admision_list:
+    pattern:  /factura/admision/list
+    defaults: { _controller: AdminBundle:Factura:listAdmision }
+    
+factura_rips_search:
+    pattern:  /factura/rips/search
+    defaults: { _controller: AdminBundle:Factura:buscarRips }
+    
+factura_rips_files:
+    pattern:  /factura/rips/files
+    defaults: { _controller: AdminBundle:Factura:ripsFiles }
+    
+factura_reporte_medico:
+    pattern:  /factura/reporte/medico
+    defaults: { _controller: AdminBundle:Factura:listadoMedico }
+    
+factura_medico_list:
+    pattern:  /factura/medico/list
+    defaults: { _controller: AdminBundle:Factura:actividadesMedico }
+    
+factura_honorario_imprimir:
+    pattern:  /factura/honorario/imprimir
+    defaults: { _controller: AdminBundle:Factura:imprimirHonorario }
+    requirements:
+        _method:  POST
+        
+factura_final_new:
+    pattern:  /factura/final/new
+    defaults: { _controller: AdminBundle:Factura:facturacionPrevia }
+    requirements:
+        _method:  POST
+        
+factura_final_save:
+    pattern:  /factura/final/save/{cliente}/{sede}
+    defaults: { _controller: AdminBundle:Factura:facturacionSave }
+    
+factura_final_show:
+    pattern:  /factura/final/show/{id}
+    defaults: { _controller: AdminBundle:Factura:facturacionShow }
+    
+factura_final_imprimir:
+    pattern:  /factura/final/imprimir/{id}
+    defaults: { _controller: AdminBundle:Factura:facturacionImprimir }
+    
+factura_final_rips:
+    pattern:  /factura/final/rips/{id}
+    defaults: { _controller: AdminBundle:Factura:facturacionRips }

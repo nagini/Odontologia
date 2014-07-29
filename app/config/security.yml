@@ -1,0 +1,44 @@
+security:
+    encoders:
+        dlaser\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
+        Symfony\Component\Security\Core\User\User: sha512
+
+    role_hierarchy:
+        ROLE_MEDICO:      ROLE_AUX
+        ROLE_ADMIN:       ROLE_MEDICO        
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        usuarios:
+            entity: { class: dlaser\UsuarioBundle\Entity\Usuario, property: cc }
+
+    firewalls:
+        main:
+            pattern: /.*
+            provider: usuarios
+            anonymous: ~
+            form_login:
+                login_path: /
+                check_path: /login_check
+            logout:
+                path: /logout
+
+    access_control:
+        - { path: ^/admin/paciente/.*, roles: ROLE_AUX }
+        - { path: ^/admin/factura/.*, roles: ROLE_AUX }
+        - { path: ^/admin/cliente/.*, roles: ROLE_AUX }
+        - { path: ^/admin/afiliacion/.*, roles: ROLE_AUX }
+        - { path: ^/admin/cargo/buscar$, roles: ROLE_AUX }
+        - { path: ^/admin/sede/buscar$, roles: ROLE_AUX }
+        - { path: ^/admin/mupio.*, roles: ROLE_AUX }
+        - { path: ^/admin/.*, roles: ROLE_ADMIN }
+        
+        - { path: ^/agenda/cupo/.*, roles: ROLE_AUX }
+        - { path: ^/agenda/lista$, roles: ROLE_AUX }
+        - { path: ^/agenda/medica/.*, roles: ROLE_MEDICO }
+        - { path: ^/agenda/aux/list, roles: ROLE_AUX }
+        - { path: ^/agenda/aux/buscar$, roles: ROLE_AUX }
+        - { path: ^/agenda/buscar$, roles: ROLE_AUX }
+        - { path: ^/agenda/.*, roles: ROLE_ADMIN }
+        
+        - { path: ^/informe/.*, roles: ROLE_AUX }       

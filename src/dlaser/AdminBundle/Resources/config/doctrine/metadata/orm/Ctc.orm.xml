@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Ctc" table="ctc">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fecha" type="datetime" column="fecha"/>
+    <field name="codigoIdx" type="string" column="codigo_idx" length="5"/>
+    <field name="descripcionIdx" type="text" column="descripcion_idx"/>
+    <field name="resumenHc" type="text" column="resumen_hc"/>
+    <field name="posUtilizado" type="string" column="pos_utilizado" length="150"/>
+    <field name="posDosis" type="integer" column="pos_dosis"/>
+    <field name="posTiempo" type="integer" column="pos_tiempo"/>
+    <field name="posPosologia" type="string" column="pos_posologia" length="180"/>
+    <field name="posRespuesta" type="text" column="pos_respuesta"/>
+    <field name="noposNota" type="text" column="nopos_nota"/>
+    <field name="noposEfectos" type="text" column="nopos_efectos"/>
+    <many-to-one field="medicamento" target-entity="Medicamento" orphan-removal="">
+      <join-columns>
+        <join-column name="medicamento_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="hc" target-entity="Hc" orphan-removal="">
+      <join-columns>
+        <join-column name="hc_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,34 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+
+{% block cuerpo %}
+
+<div class="grid_6 push_3" id="login">
+
+	<h1>Accede a tu cuenta</h1>
+
+	{% if error %}
+	    <div class="error">{{ error.message }}</div>
+	{% endif %}
+	
+	<form action="{{ path("login_check") }}" method="post" id="login">
+	    <div>
+	        <label for="username">Usuario</label>
+	        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+	    </div>
+	
+
+	    <div>
+	        <label for="password">Contraseña</label>
+	        <input type="password" id="password" name="_password" />
+	    </div>
+
+	    <input type="checkbox" id="no_cerrar" name="_remember_me" checked />
+        <label for="no_cerrar">No cerrar sesión</label>
+
+	
+	    <input type="submit" value="INGRESAR" />
+	</form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,293 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de reservas{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+{% block cuerpo %}
+    <div id="ajaxMsg"></div>
+    
+    <div>
+        <label for="sede">Sede</label>
+        <select name="sede" id="sede">
+            <option value="">Seleccione una sede</option>
+        </select>
+    </div>
+    
+    <div id="agendas" >
+        <table id="agenda_reservas">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Inicia</th>
+                    <th>Termina</th>
+                    <th>Tiempo</th>
+                    <th>Estado</th>
+                    <th>Nota</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="cupos">
+        <table id="reservas">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                    <th>Nota</th>                    
+                    <th>Paciente</th>
+                    <th>Movil</th>
+                    <th>Actividad</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+        
+        <a href="{{ path('cupo_new') }}" class="button left"><span class="label">Nueva reserva</span></a>
+        
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    <script type="text/javascript">
+
+	    function buscarSedeUsuario(){
+	        
+	    	var url="{{ path('sede_buscar') }}";
+	        
+	        $.post(url,{
+	               
+	        },function(data){
+	            if(data.responseCode==200 ){
+	
+	                $("#ajaxMsg").empty();
+	
+	        		var select = $('#sede');
+	        		if(select.prop) {
+	        		  var options = select.prop('options');
+	        		}
+	        		else {
+	        		  var options = select.attr('options');
+	        		}
+	        		$('option', select).remove();
+	
+	        		options[options.length] = new Option('Seleccione una sede', '');
+	
+	        		$.each(data.sedes, function(val, text) {
+	        		    options[options.length] = new Option(text, val);
+	        		});
+	        		
+	        		select.val('');                    
+	            }
+	            else if(data.responseCode==400){
+	            	$('#ajaxMsg').html(data.msg);
+	                $('#ajaxMsg').css("color","red");
+	            }
+	            else{
+	        	    alert("Ha ocurrido un error en el sistema.");
+	            }
+	        });    	
+	    } // buscarSedeUsuario
+
+    	$(document).ready(function() {
+            buscarSedeUsuario();
+
+            $("#sede").change(function(){
+                
+                var sede = $("#sede").val();
+
+                $('#agendas tbody').empty();
+                $('#cupos tbody').empty();
+                                
+            	if($.isNumeric(sede)){
+            		var url="{{ path('ajx_agenda_lista') }}";
+                    
+                    $.post(url,{
+                        sede: sede       
+                    },function(data){
+                        if(data.responseCode==200 ){            
+                            $("#ajaxMsg").empty();
+                            
+                            var href = '';
+
+                            $.each(data.agenda, function(i, val) {
+
+                            	href='<a href="#" onClick="listarCupos('+val.id+');">Ver cupos</a>';
+                                
+                                $("#agenda_reservas tbody").append("<tr>");
+                                  $("#agenda_reservas tbody").append("<td>"+i+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+val.fechaInicio.date+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+val.fechaFin.date+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+val.intervalo+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+val.estado+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+val.nota+"</td>");
+                                  $("#agenda_reservas tbody").append("<td>"+href+"</td>");                               
+                                $("#agenda_reservas tbody").append("</tr>");
+                    		});         
+                    		                    
+                        }
+                        else if(data.responseCode==400){
+                        	$('#ajaxMsg').html(data.msg);
+                            $('#ajaxMsg').css("color","red");
+                        }
+                        else{
+                    	    alert("Ha ocurrido un error en el sistema.");
+                        }
+                    });
+            	}else{
+                	alert("Seleccione una sede correcta.");
+                }
+            });
+        });
+
+    	function popup(url,ancho,alto) {
+			var posicion_x; 
+			var posicion_y; 
+	
+			posicion_x=(screen.width/2)-(ancho/2); 
+			posicion_y=(screen.height/2)-(alto/2); 
+	
+			window.open(url, "", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=yes,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+		}
+
+        function listarCupos(agenda){
+            
+        	var url="{{ path('ajx_cupo_lista') }}";
+        	        	
+
+        	$('#cupos tbody').empty();
+            
+            $.post(url,{
+                agenda: agenda
+            },function(data){
+                if(data.responseCode==200 ){
+
+                	$.each(data.cupo, function(i, val) {
+
+                    	if(val.estado == 'A'){
+
+                        	var id = parseInt(val.id);
+
+                    		var ruta = Routing.generate('cupo_edit', { 'id': id });                    		
+                    		var editar_pac = Routing.generate('paciente_edit', { 'id': parseInt(val.paciente) });
+
+                    		var a = '';
+                    		var b = '';
+                    		var c = '';
+                    		var d = '';
+
+                    		if(val.priNombre) a = val.priNombre + " ";
+                    		if(val.segNombre) b = val.segNombre + " ";
+                    		if(val.priApellido) c = val.priApellido + " ";
+                    		if(val.segApellido) d = val.segApellido + " ";
+
+                    		var nombre = a.concat(b, c, d);
+                    		                        
+                            $("#reservas tbody").append("<tr>");
+                              $("#reservas tbody").append("<td>"+val.hora+"</td>");
+                              $("#reservas tbody").append("<td>Asignado</td>");
+                              $("#reservas tbody").append("<td>"+val.nota+"</td>");                              
+                              $("#reservas tbody").append("<td><a href='"+ editar_pac +"' target='popup' title='Ver información del paciente' onClick='popup(this.href,750,600); return false;'>"+nombre.toUpperCase()+"</a></td>");
+                              $("#reservas tbody").append("<td>"+val.movil+"</td>");
+                              $("#reservas tbody").append("<td>"+val.nombre+"</td>");
+                              $("#reservas tbody").append("<td><a href='"+ ruta +"'>Reprogramar</a>-<a href='#' onClick='borrarCupo("+id+", "+agenda+"); return false;'>Cancelar</a></td>");                               
+                            $("#reservas tbody").append("</tr>");
+                            
+                    	}else{
+                        	var id = parseInt(val.id);
+                    		                		
+                    		var editar_pac = Routing.generate('paciente_edit', { 'id': parseInt(val.paciente) });
+
+                    		var a = '';
+                    		var b = '';
+                    		var c = '';
+                    		var d = '';
+
+                    		if(val.priNombre) a = val.priNombre + " ";
+                    		if(val.segNombre) b = val.segNombre + " ";
+                    		if(val.priApellido) c = val.priApellido + " ";
+                    		if(val.segApellido) d = val.segApellido + " ";
+
+                    		var nombre = a.concat(b, c, d);
+                    		                        
+                            $("#reservas tbody").append("<tr>");
+                              $("#reservas tbody").append("<td>"+val.hora+"</td>");
+                              $("#reservas tbody").append("<td>"+val.estado+"</td>");
+                              $("#reservas tbody").append("<td>"+val.nota+"</td>");                              
+                              $("#reservas tbody").append("<td><a href='"+ editar_pac +"' target='popup' title='Ver información del paciente' onClick='popup(this.href,750,600); return false;'>"+nombre.toUpperCase()+"</a></td>");
+                              $("#reservas tbody").append("<td>"+val.movil+"</td>");
+                              $("#reservas tbody").append("<td>"+val.nombre+"</td>");
+                              $("#reservas tbody").append("<td></td>");                               
+                            $("#reservas tbody").append("</tr>");
+                        }
+            		});
+                }
+                else if(data.responseCode==400){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });    	
+        } // buscarSedeUsuario
+
+
+	function borrarCupo(cupo, agenda){
+            
+        	var url="{{ path('cupo_delete') }}";
+            
+            $.post(url,{
+                cupo: cupo
+            },function(data){
+                if(data.responseCode==200 ){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","green");
+
+                    listarCupos(agenda);
+                }
+                else if(data.responseCode==400){
+                	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                }
+                else{
+            	    alert("Ha ocurrido un error en el sistema.");
+                }
+            });    	
+        } // borrarCupo
+        
+    </script>
+{% endblock %}

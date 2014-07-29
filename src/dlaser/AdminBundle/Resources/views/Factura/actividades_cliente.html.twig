@@ -1,0 +1,118 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de actividades realizadas{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+{% block cuerpo %}
+	<strong>Sede:</strong>
+		<span>{{ sede.nombre }}</span><br />
+		
+	<label>Cliente:</label>
+		<span>{{ cliente.nombre }}</span><br />
+		
+	<label>Desde:</label>
+		<span>{{ f_i }}</span><br />
+		
+	<label>Hasta:</label>
+		<span>{{ f_f }}</span>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tipo</th>
+                <th>Identificación</th>
+                <th>Fecha</th>
+                <th>Orden</th>
+                <th>Paciente</th>
+                <th>Actividad</th>
+                <th>Valor</th>
+                <th>Copago</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+                   
+        
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('factura_edit', { 'id': entity.id }) }}" target="popup" title="Modificar admisión" onClick="popup(this.href,750,600); return false;">{{ entity.id }}</a></td>
+                <td>{{ entity.tipoId }}</td>
+                <td>{{ entity.identificacion }}</td>
+                <td>{{ entity.fecha|date('d-m-Y') }}</td>
+                <td>{{ entity.autorizacion }}</td>
+                <td><a href="{{ path('paciente_edit', { 'id': entity.paciente }) }}" target="popup" title="Modificar admisión" onClick="popup(this.href,750,600); return false;">{{ entity.priNombre|capitalize }} {{ entity.segNombre|capitalize }} {{ entity.priApellido|capitalize }} {{ entity.segApellido|capitalize }}</a></td>
+                <td>{{ entity.cups }}</td>
+                <td>{{ entity.valor }}</td>
+                <td>{{ entity.copago }}</td>
+                <td>{{ entity.estado }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="10">No tenemos actividades realizades en este periodo de tiempo.</td>
+         	</tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+    
+    {% if entities %}
+    	<form action="{{ path('factura_cobro_imprimir') }}" method="post">
+    		<input type="hidden" name="sede" value="{{ sede.id }}" />
+    		<input type="hidden" name="cliente" value="{{ cliente.id }}" />
+    		<input type="hidden" name="f_inicio" value="{{ f_i }}" />
+    		<input type="hidden" name="f_fin" value="{{ f_f }}" />
+
+    		<button class="action blue" type="submit">
+		        <span class="label">Generar Cta. Cobro</span>
+		    </button>
+    	</form>
+    	
+    	<form action="{{ path('factura_final_new') }}" method="post">
+    		<input type="hidden" name="sede" value="{{ sede.id }}" />
+    		<input type="hidden" name="cliente" value="{{ cliente.id }}" />
+    		<input type="hidden" name="f_inicio" value="{{ f_i }}" />
+    		<input type="hidden" name="f_fin" value="{{ f_f }}" />
+
+    		<button class="action green" type="submit">
+		        <span class="label">Generar Factura</span>
+		    </button>
+    	</form>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+
+	function popup(url,ancho,alto) {
+		var posicion_x; 
+		var posicion_y; 
+
+		posicion_x=(screen.width/2)-(ancho/2); 
+		posicion_y=(screen.height/2)-(alto/2); 
+
+		window.open(url, "", "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=yes,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	}
+</script>
+{% endblock %}

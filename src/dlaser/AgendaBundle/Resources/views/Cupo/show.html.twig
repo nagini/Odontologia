@@ -1,0 +1,81 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Detalle reserva{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+{% block cuerpo %}
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Hora</th>
+                <td><b>{{ cupo.hora|date('d-m-Y H:i') }}</b></td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>
+                	{% if cupo.estado == 'A' %}
+                		Activo
+                	{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Nota</th>
+                <td>{{ cupo.nota }}</td>
+            </tr>
+            <tr>
+                <th>Registra</th>
+                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+            </tr>
+            <tr>
+                <th>Código</th>
+                <td>{{ cupo.verificacion }}</td>
+            </tr>
+            <tr>
+                <th>Paciente</th>
+                <td>{{ cupo.paciente.priNombre }} {{ cupo.paciente.segNombre }} {{ cupo.paciente.priApellido }} {{ cupo.paciente.segApellido }}</td>
+            </tr>
+            <tr>
+                <th>Cargo</th>
+                <td><b>{{ cupo.cargo.nombre }}</b></td>
+            </tr>
+            <tr>
+                <th>Preparación</th>
+                <td><b>{{ cupo.cargo.indicacion }}</b></td>
+            </tr>
+            <tr>
+                <th>Lugar</th>
+                <td><b>{{ cupo.agenda.sede.nombre }}</b></td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td><b>{{ cupo.agenda.sede.direccion }}</b></td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <a href="{{ path('cupo_edit', { 'id': cupo.id }) }}" class="button left"><span class="label">Modificar reserva</span></a>
+    <a href="{{ path('cupo_new') }}" class="button middle"><span class="label">Nueva reserva</span></a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    {% block header %}{% endblock %}
+       
+    <section>
+        <header id="titulo" class="grid_16"><br /><h1>{% block titulo %}{% endblock %}</h1></header>
+        
+        <article id="cuerpo" class="grid_12">{% block cuerpo %}{% endblock %}</article>
+    </section>
+
+{% endblock %}

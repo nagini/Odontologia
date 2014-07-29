@@ -1,0 +1,65 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de agendas{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Inicia</th>
+                <th>Termina</th>
+                <th>Tiempo</th>
+                <th>Estado</th>
+                <th>Nota</th>
+                <th>Asignada</th>
+                <th>Sede</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for agenda in agendas %}
+            <tr>
+                <td><a href="{{ path('agenda_show', { 'id': agenda.id }) }}">{{ loop.index }}</a></td>
+                <td>{{ agenda.fechaInicio | date('d-m-Y H:i') }}</td>
+                <td>{{ agenda.fechaFin | date('d-m-Y H:i') }}</td>
+                <td>{{ agenda.intervalo }}</td>
+                <td>{{ agenda.estado }}</td>
+                <td>{{ agenda.nota }}</td>
+                <td>{{ agenda.usuario.nombre }}</td>
+                <td>{{ agenda.sede.nombre }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="7">No tenemos agendas creadas.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{{ path('agenda_new') }}" class="button left"><span class="label">Nuevo agenda</span></a>
+{% endblock %}

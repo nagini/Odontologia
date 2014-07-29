@@ -1,0 +1,72 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Detalles de la actividad{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Cups</th>
+                <td>{{ actividad.cargo.cups }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ actividad.cargo.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Indicación</th>
+                <td>{{ actividad.cargo.indicacion }}</td>
+            </tr>
+            <tr>
+                <th>Valor</th>
+                <td>$
+                    {% if actividad.precio %}
+                        <b>{{ actividad.precio }}</b>
+                    {% else %}
+                        {{ actividad.cargo.valor }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>
+                    {% if actividad.estado == 'A' %}
+            		    Activo
+            	    {% else %}
+            		    Inactivo
+            	    {% endif %}
+            	</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+    <a href="{{ path('actividad_edit', {'contrato': actividad.contrato.id, 'cargo': actividad.cargo.id}) }}" class="button left"><span class="label">Modificar actividad</span></a>
+    <a href="{{ path('contrato_show', {'id': actividad.contrato.id}) }}" class="button middle"><span class="label">Regresar al listado</span></a>
+    <a href="{{ path('actividad_new', { 'id': actividad.contrato.id }) }}" class="button left"><span class="label">Crear actividad</span></a>
+{% endblock %}

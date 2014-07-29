@@ -1,0 +1,49 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Nueva empresa{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+<form action="{{ path('sede_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <fieldset>
+    	<legend>Datos de la sede</legend>
+    	{{ form_widget(edit_form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Modificar</span>
+    </button>
+    <a href="{{ path('sede_show', {'id': entity.id}) }}" class="button left"><span class="label">Detalle de la sede</span></a>
+    
+</form>
+
+<form action="{{ path('sede_delete', { 'id': entity.id }) }}" method="post">
+    {{ form_widget(delete_form) }}
+    <button class="action red" type="submit" onclick="return confirm('¿Realmente desea eliminar la sede?');">
+        <span class="label">Eliminar</span>
+    </button>
+</form>
+{% endblock %}

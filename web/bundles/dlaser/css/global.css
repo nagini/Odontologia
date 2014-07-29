@@ -1,0 +1,511 @@
+body {
+  _background: #E6E2DF;
+  _color: #333;
+  _height: auto;
+}
+
+#logo{
+	background:url(../images/logo.png);
+	-moz-background-size:50% 100%;
+	background-size: 50% 100%;
+	background-repeat: no-repeat;
+	background-position:right center;
+	width: 60px;
+	height: 105px;
+}
+
+#banner_cliente{
+	background:url(../images/banner.png);
+	-moz-background-size:100% 65%;
+	background-size: 87% 60%;
+	background-repeat: no-repeat;
+	background-position:center center;
+	height: 105px;
+}
+
+#contenedor {
+  background-color: #fff;
+  background-repeat: repeat-y;
+}
+
+#wrapper {
+	margin-top: 1%;
+}
+
+#pie{
+	margin-left:auto;
+	margin-right: auto;
+	width: 300px;
+	text-align: center;
+}
+        
+}
+
+#username a{
+	float: left;
+	color: #CCCCCC !important;
+	cursor: pointer;
+    display: block;
+    text-decoration: none !important;
+    padding-top: 7px;
+    padding-left: 15%;
+}
+
+#logout{
+	float: right;
+}
+
+#titulo{
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+#titulo h1{
+	margin-left: 30px;
+}
+
+#cuerpo{
+	margin-bottom: 2em;
+}
+
+#footer{
+	background-color: #000;
+}
+
+.bundle{
+	color: #CCCCCC !important;
+	cursor: pointer;
+    display: block;
+    text-decoration: none !important;
+}
+
+.bundle.sel{
+	font-weight: bold;
+	color: #fff !important;
+	border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-top: 1px solid #DD4B39;
+    padding: 0 5px;
+    position: relative;
+    z-index: 1000;
+}
+
+/******************** Formularios ********************************/
+
+.error{
+	text-align: center;
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+fieldset {
+	border:2px solid #999;
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+fieldset legend {
+	font-size:14px;
+	color: #999;
+}
+
+form label {
+    font-size: 14px;
+    font-weight: normal;
+    width: 130px;
+    display: inline-block;
+}
+
+
+form input {
+    font-size: 15px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+form select {
+    font-size: 15px;
+    display: inline-block;
+    margin-bottom: 15px;
+    _width: 95%;
+}
+
+form textarea {
+    font-size: 12px;
+    display: inline-block;
+    width: 97%;
+    height: 50px;
+}
+
+form .required:after
+{
+content: " *";
+}
+
+#btnAjax{
+	position: absolute;
+}
+
+/******************** Formulario HC ********************************/
+
+#antecedentes label {
+    font-size: 16px;
+    font-weight: normal;
+    width: 110px !important;
+    display: inline-block;
+    text-align: right;	
+}
+
+#h_c_edit label {
+    font-size: 16px;
+    font-weight: normal;
+    width: 240px;
+    display: inline-block;
+}
+
+#list-dx{
+	width: 400px;
+}
+
+#signos label {
+    font-size: 16px;
+    font-weight: normal;
+    width: 55px !important;
+    display: inline-block;
+    text-align: right;	
+}
+
+#signos input {
+    width: 50px !important;
+    display: inline-block;
+    text-align: right;	
+}
+
+/******** Ecocardiograma **********/
+
+#eco fieldset div{
+	float: left;
+}
+
+#eco fieldset div input{
+	width: 80px;
+}
+
+#fechas{
+	width: 100% !important;
+}
+
+#fechas div{
+	width: 100% !important;
+}
+
+#solicitado{
+	width: 100% !important;
+}
+
+#solicitado input{
+	width: 300px !important;
+}
+
+fieldset div:nth-last-child(1) {
+  width: 100%;
+}
+
+fieldset div:nth-last-child(2) {
+  width: 100%;
+}
+
+/********* Login ************/
+
+#login_form{
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#login_form h1 {
+    
+    background: -moz-linear-gradient(#829AA8, #405A6A) repeat scroll 0 0 transparent;
+    border-color: #677C89 #677C89 #6B808D;
+    border-radius: 3px 3px 0 0;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 18px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.698);
+    background: #405A6A;
+}
+
+#login_form p {
+    color: #2F424E;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0;
+    text-shadow: 0 -1px 0 rgba(100, 100, 100, 0.1);
+}
+#login_form form label, .login_form form .label, label.standard {
+    color: #2F424E;
+    cursor: text;
+    display: inline-block;
+    font-size: 110%;
+    text-shadow: 0 -1px 0 rgba(100, 100, 100, 0.1);
+}
+#login_form form label a {
+    font-size: 90%;
+}
+#login_form form input.text, .login_form form textarea {
+    border: 1px solid #D8DEE2;
+    margin: 0.2em 0 1em;
+    padding: 5px;
+}
+#login_form form input.text {
+    font-size: 110%;
+}
+#login_form form p.small_notice {
+    font-weight: 200;
+    padding-top: 20px;
+}
+#login_form form input[type="submit"] {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: -moz-linear-gradient(#FFFFFF, #E1E1E1) repeat scroll 0 0 transparent;
+    border-color: -moz-use-text-color -moz-use-text-color #EBEBEB;
+    border-radius: 4px 4px 4px 4px;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Helvetica,arial,freesans,clean,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    height: 34px;
+    margin-left: 1px;
+    overflow: visible;
+    padding: 0 13px;
+    position: relative;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    top: 1px;
+    white-space: nowrap;
+}
+#login_form form input[type="submit"]:hover {
+    background: -moz-linear-gradient(#0CA6DD, #0770A0) repeat scroll 0 0 transparent;
+    border-bottom-color: #0770A0;
+    color: #FFFFFF;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+}
+#login_form form .error_box, .login_form form .notification {
+    margin-bottom: 1em;
+}
+#login_form p.password-note {
+    color: #777777;
+    margin: 10px 0;
+    text-align: center;
+}
+
+#login_form .formbody {
+    background-color: #E9F1F4;
+    border-color: #E9F1F4 #D8DEE2 #D8DEE2;
+    border-radius: 0 0 3px 3px;
+    border-style: solid;
+    border-width: 1px 1px 2px;
+    overflow: hidden;
+    padding: 2em;
+}
+
+.error_box {
+    background: none repeat scroll 0 center #FFEBE8;
+    border: 1px solid #DD3C10;
+    font-weight: bold;
+    padding: 1em;
+}
+
+/********* Tablas ***********/
+
+table {
+  clear: both;
+  margin-bottom: 2em;
+  width: 100%;
+}
+
+thead th {
+  background: #555;
+  border-right: 1px solid #CCC !important;
+  color: #FFF;
+  font-size: 13px;
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+tr, th, td {
+  border: solid #CCC;
+  border-width: 1px 0;
+  padding: .5em .25em;
+}
+
+/*tr:nth-child(2n+1) td {
+  background: #F1F1F1;
+}*/
+
+.P{
+	background: #F1F1F1;
+}
+
+.PI{
+	background: #C5C5C5;
+}
+
+table a {
+  text-decoration: none;
+}
+
+table a + a {
+  margin-left: 1em;
+}
+table a[href*="edit"], table a[href*="delete"] {
+  text-decoration: none;
+  margin-right: 1em;
+}
+table a[href*="edit"]:hover, table a[href*="delete"]:hover {
+  text-decoration: underline;
+}
+
+tr:hover td {
+  background: #FFC;
+  color: #000;
+}
+tr:hover a {
+  text-decoration: underline;
+}
+
+h2{
+	margin-top: 4em;
+}
+
+/********* Mensajes de información ***********/
+
+.info, .success, .alerta, .error {
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size:13px;
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    position:relative;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('./images/info.png');
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('./images/exito.png');
+}
+.alerta {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('alerta.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('./images/error.png');
+}
+
+/********* Paginador ***********/
+
+ul.paginador {
+    background: none repeat scroll 0 0 #DCDCDC;
+    list-style: none outside none;
+    margin: 0 0 1em;
+    padding: 0.5em;
+    text-align: center;
+}
+ul.paginador li {
+    display: inline;
+    margin: 0;
+    padding: 0 1em;
+}
+ul.paginador li.actual {
+    font-weight: bold;
+}
+
+/********* Contenido Ajax ***********/
+
+.ajxCapa{
+	display: none;
+}
+
+#btnNewPaciente{
+	_position: absolute;
+	_margin-left: 52px;
+	display: none;
+}
+
+#NewCliente{
+	_position: absolute;
+	_margin-left: 52px;
+
+#create-user{
+	display: none;
+}
+
+/*********** Rastro de Miga  ***********************/
+
+#wo-breadcrumbs
+{
+    font: 11px Arial, Helvetica, sans-serif;
+    background-image:url('./images/bc_bg.png'); 
+    background-repeat:repeat-x;
+    height:30px;
+    line-height:30px;
+    color:#9b9b9b;
+    border:solid 1px #cacaca;
+    width:100%;
+    overflow:hidden;
+    margin:0px;
+    padding:0px;
+    border-radius:50px;
+}
+#wo-breadcrumbs li 
+{
+    list-style-type:none;
+    float:left;
+    padding-left:10px;
+    margin-left: 1px !important
+    
+}
+#wo-breadcrumbs a
+{
+    height:30px;
+    display:block;
+    background-image:url('./images/bc_separator.png'); 
+    background-repeat:no-repeat; 
+    background-position:right;
+    padding-right: 15px;
+    text-decoration: none;
+    color:#454545;
+}
+.home
+{
+    border:none;
+    margin: 8px 0px;
+}
+
+#wo-breadcrumbs a:hover
+{
+	color:#35acc5;
+}
+
+/*********** Fin Rastro de Miga  ***********************/

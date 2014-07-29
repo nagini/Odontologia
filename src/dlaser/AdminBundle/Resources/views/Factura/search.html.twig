@@ -1,0 +1,150 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Buscar reserva{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+    	
+    	<div id="ajaxMsg"></div>
+    	
+    	<div>
+    	    <label for="valor">Parametro</label>
+    	        <input type="text" name="valor" id="valor" autofocus="autofocus" placeholder="Ingrese el parametro de busqueda" size="30" />
+    	</div>
+    	
+    	<div>
+    	    <input type = "radio" name = "parametro" id = "identificacion" value = "identificacion" checked = "checked" />
+                <label for = "identificacion">Identificación</label>
+                
+            <!-- <input type = "radio" name = "parametro" id = "nombre" value = "nombre" />
+                <label for = "nombre">Nombre</label>-->
+            
+            <input type = "radio" name = "parametro" id = "codigo" value = "codigo" />
+                <label for = "codigo">Código</label>
+    	</div>
+    	
+    	<button class="action blue" type="submit" id="buscar">
+            <span class="label">Buscar</span>
+        </button>
+    	
+    	<div id="cupos">
+        <table id="reservas">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Nota</th>
+                    <th>movil</th>
+                    <th>Paciente</th>
+                    <th>Actividad</th>
+                    <th>Sede</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    </div>
+    
+    
+    
+</form>
+{% endblock %}
+
+{% block javascripts %}
+
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+    	$("#buscar").click(function(){
+
+    		$("#reservas tbody").empty();
+        
+            var url="{{ path('factura_buscar') }}";
+    
+            var valor = $("#valor").val();
+            var parametro = '';
+    
+            if($("#identificacion").is(':checked')) parametro = $("#identificacion").val();
+    
+            if($("#nombre").is(':checked')) parametro = $("#nombre").val();
+    
+            if($("#codigo").is(':checked')) parametro = $("#codigo").val();
+
+            if(valor){
+            
+                $.post(url,{
+                       valor: valor,
+                       parametro: parametro
+                },function(data){
+                    if(data.responseCode==200 ){
+                    	
+                    	$.each(data.cupo, function(i, val) {
+
+                    		var segNombre = "";
+                			var segApellido = "";
+                			var codigo = "";
+                        	       
+                            var id = parseInt(val.id);
+        
+                            var ruta = Routing.generate('factura_save', { 'cupo': id });
+
+                        	if(val.segNombre) segNombre = " " + val.segNombre;
+                    		if(val.segApellido) segApellido = " " + val.segApellido;
+                    		if(val.verificacion) codigo = val.verificacion;
+                        		                        
+                            $("#reservas tbody").append("<tr>");
+                            	$("#reservas tbody").append("<td>"+val.hora+"</td>");
+                                $("#reservas tbody").append("<td>"+val.nota+"</td>");
+                                $("#reservas tbody").append("<td>" + val.movil + "</td>");
+                                $("#reservas tbody").append("<td>"+val.priNombre + segNombre + " " + val.priApellido + segApellido + "</td>");
+                                $("#reservas tbody").append("<td>"+val.cargo+"</td>");
+                                $("#reservas tbody").append("<td>"+val.sede+"</td>");
+                                $("#reservas tbody").append("<td><a href='"+ ruta +"'>Confirmar</a></td>");                               
+                            $("#reservas tbody").append("</tr>");                        	
+                		});
+                    }
+                    else if(data.responseCode==400){
+                            	           	            	
+                    	$('#ajaxMsg').html(data.msg);
+                        $('#ajaxMsg').css("color","red");
+                    }
+                    else{
+                	    alert("Ha ocurrido un error en el sistema.");
+                    }
+                });
+            }else{
+                alert("ingrese un parametro de consulta");
+            }
+    	});
+    });
+</script>
+
+{% endblock %}

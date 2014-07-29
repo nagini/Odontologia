@@ -1,0 +1,57 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Listado de clientes{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nit</th>
+                <th>Código de EPS</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ path('cliente_show', {'id':entity.id}) }}">{{ entity.nit }}</a></td>
+                <td>{{ entity.codEps }}</td>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="4">No tenemos clientes creados.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="{{ path('cliente_new') }}" class="button left"><span class="label">Nuevo cliente</span></a>
+{% endblock %}

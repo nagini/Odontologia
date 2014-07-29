@@ -1,0 +1,159 @@
+#************** Agenda ***************#
+
+agenda_list:
+    pattern:  /list
+    defaults: { _controller: AgendaBundle:Agenda:list }
+    
+agenda_new:
+    pattern:  /new
+    defaults: { _controller: AgendaBundle:Agenda:new }
+    
+agenda_save:
+    pattern:  /save
+    defaults: { _controller: AgendaBundle:Agenda:save }
+    
+agenda_show:
+    pattern:  /{id}/show
+    defaults: { _controller: AgendaBundle:Agenda:show }
+    
+agenda_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: AgendaBundle:Agenda:edit }
+    
+agenda_update:
+    pattern:  /{id}/update
+    defaults: { _controller: AgendaBundle:Agenda:update }
+    
+agenda_buscar:
+    pattern:  /buscar
+    defaults: { _controller: AgendaBundle:Agenda:ajaxBuscar }
+    requirements:
+        _method:  POST
+        
+ajx_agenda_lista:
+    pattern:  /lista
+    defaults: { _controller: AgendaBundle:Agenda:ajaxLista }
+    requirements:
+        _method:  POST
+    
+#************** Restricción ***************#
+    
+restriccion_list:
+    pattern:  /restriccion/list
+    defaults: { _controller: AgendaBundle:Restriccion:list }
+
+restriccion_new:
+    pattern:  /restriccion/{id}/new
+    defaults: { _controller: AgendaBundle:Restriccion:new }
+    
+restriccion_save:
+    pattern:  /restriccion/{id}/save
+    defaults: { _controller: AgendaBundle:Restriccion:save }
+    
+restriccion_edit:
+    pattern:  /restriccion/{id}/{agenda}/edit
+    defaults: { _controller: AgendaBundle:Restriccion:edit }
+    
+restriccion_update:
+    pattern:  /restriccion/{id}/{agenda}/update
+    defaults: { _controller: AgendaBundle:Restriccion:update }
+    
+restriccion_delete:
+    pattern:  /restriccion/{id}/{agenda}/delete
+    defaults: { _controller: AgendaBundle:Restriccion:delete }
+    
+#************** Cupo ***************#
+
+cupo_list:
+    pattern:  /cupo/list
+    defaults: { _controller: AgendaBundle:Cupo:list }
+
+cupo_new:
+    pattern:  /cupo/new
+    defaults: { _controller: AgendaBundle:Cupo:new }
+    
+cupo_edit:
+    pattern:  /cupo/{id}/edit
+    defaults: { _controller: AgendaBundle:Cupo:edit }
+    options: 
+        expose: true
+    
+cupo_update:
+    pattern:  /cupo/{id}/update
+    defaults: { _controller: AgendaBundle:Cupo:update }
+    
+cupo_delete:
+    pattern:  /cupo/delete
+    defaults: { _controller: AgendaBundle:Cupo:delete }
+    requirements:
+        _method:  POST
+    
+cupo_show:
+    pattern:  /cupo/{id}/show
+    defaults: { _controller: AgendaBundle:Cupo:show }
+    
+cupo_save:
+    pattern:  /cupo/save
+    defaults: { _controller: AgendaBundle:Cupo:save }
+    
+cupo_search:
+    pattern:  /cupo/search
+    defaults: { _controller: AgendaBundle:Cupo:search }
+    
+cupo_buscar:
+    pattern:  /cupo/buscar
+    defaults: { _controller: AgendaBundle:Cupo:ajaxBuscar }
+    requirements:
+        _method:  POST
+        
+ajx_cupo_lista:
+    pattern:  /cupo/listar
+    defaults: { _controller: AgendaBundle:Cupo:ajaxListar }
+    requirements:
+        _method:  POST
+        
+ajx_cupo_search:
+    pattern:  /cupo/searching
+    defaults: { _controller: AgendaBundle:Cupo:ajaxBuscarCupo }
+    requirements:
+        _method:  POST
+        
+#************** Agenda Medica ***************#
+
+agenda_medica_list:
+    pattern:  /medica/list
+    defaults: { _controller: AgendaBundle:Agenda:agendaMedica }
+    
+agenda_medica_buscar:
+    pattern:  /medica/buscar
+    defaults: { _controller: AgendaBundle:Agenda:ajaxAgendaMedicaBuscar }
+    requirements:
+        _method:  POST
+        
+agenda_aux_list:
+    pattern:  /aux/list
+    defaults: { _controller: AgendaBundle:Agenda:agendaAuxiliar }
+    
+agenda_aux_buscar:
+    pattern:  /aux/buscar
+    defaults: { _controller: AgendaBundle:Agenda:ajaxAgendaAuxiliarBuscar }
+    requirements:
+        _method:  POST
+        
+#******** Realizar Actividad ************#        
+        
+realizar_actividad:
+    pattern:  /medica/realizar/{factura}/actividad
+    defaults: { _controller: AgendaBundle:Cupo:doActivity }
+    options: 
+        expose: true
+        
+#******** Informer de Consultas ************#
+
+informe_tipo:
+    pattern:  /informe/tipo
+    defaults: { _controller: AgendaBundle:InformeCita:informeTipo }
+    
+informe_tipo_paciente:
+    pattern:  /informe/tipo/{paciente}/paciente
+    defaults: { _controller: AgendaBundle:InformeCita:informePaciente }

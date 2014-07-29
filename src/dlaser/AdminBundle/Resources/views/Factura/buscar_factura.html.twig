@@ -1,0 +1,54 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Buscar admisión{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+
+		<form action="{{ path('factura_admision_list') }}" method="post">
+		    <fieldset>
+		    	<legend>Datos de la admisión</legend>
+		    	
+				<div>
+		    	    <label for="valor">Parametro</label>
+		    	        <input type="text" name="valor" id="valor" autofocus="autofocus" placeholder="Ingrese el parametro de busqueda" size="30" />
+		    	</div>
+		    	
+		    	<div>
+		    	    <input type = "radio" name = "parametro" id = "identificacion" value = "identificacion" checked = "checked" />
+		                <label for = "identificacion">Identificación</label>
+		            
+		            <input type = "radio" name = "parametro" id = "codigo" value = "codigo" />
+		                <label for = "codigo">Código</label>
+		    	</div>
+		    </fieldset>   	
+    	
+    	<button class="action blue" type="submit" id="buscar">
+            <span class="label">Buscar</span>
+        </button>    
+</form>
+{% endblock %}

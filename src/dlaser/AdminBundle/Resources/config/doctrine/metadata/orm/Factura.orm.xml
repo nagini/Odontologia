@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Factura" table="factura">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fecha" type="datetime" column="fecha"/>
+    <field name="fR" type="datetime" column="f_r"/>
+    <field name="autorizacion" type="string" column="autorizacion" length="30"/>
+    <field name="valor" type="integer" column="valor"/>
+    <field name="copago" type="integer" column="copago"/>
+    <field name="descuento" type="integer" column="descuento"/>
+    <field name="estado" type="string" column="estado" length="1"/>
+    <field name="observacion" type="string" column="observacion" length="255"/>
+    <many-to-one field="cupo" target-entity="Cupo" orphan-removal="">
+      <join-columns>
+        <join-column name="cupo_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="cargo" target-entity="Cargo" orphan-removal="">
+      <join-columns>
+        <join-column name="cargo_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="cliente" target-entity="Cliente" orphan-removal="">
+      <join-columns>
+        <join-column name="cliente_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="paciente" target-entity="Paciente" orphan-removal="">
+      <join-columns>
+        <join-column name="paciente_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="sede" target-entity="Sede" orphan-removal="">
+      <join-columns>
+        <join-column name="sede_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

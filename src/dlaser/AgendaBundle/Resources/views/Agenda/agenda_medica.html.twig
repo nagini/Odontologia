@@ -1,0 +1,113 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Agenda medica{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+
+{% block cuerpo %}
+
+    <div>
+        {{ form_label(form.sede) }}
+        {{ form_errors(form.sede) }}
+        {{ form_widget(form.sede) }}
+    </div>
+    
+    <div id="ajaxMsg"></div>
+    <div id="programacion"></div>
+{% endblock %}
+
+{% block javascripts %}
+
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+<script type="text/javascript">
+
+    $("#AgendaMedica_sede").change(function(){
+        
+        var sede = $("#AgendaMedica_sede").val();
+                
+    	if($.isNumeric(sede)){
+
+    	    var url = "{{ path('agenda_medica_buscar') }}";
+    	    $("#programacion").html("<img src='{{ asset('bundles/dlaser/images/ajax-loader.gif') }}' />");
+        	
+    		$.post(url,{
+                sede: sede
+            },function(data){
+                if(data.responseCode==200 ){
+
+                	$("#programacion").empty();
+                	$("#ajaxMsg").empty();
+                    
+                    var tabla = '<table>';
+                    tabla += '<caption>Agenda medica</caption>';
+                    tabla += '<thead>';
+                    tabla += '<tr>';
+                    tabla += '<th>Hora</th><th>Facturado</th><th>Identificación</th><th>Paciente</th><th>Entidad</th><th>Actividad</th><th>Observación</th><th>Estado</th><th>Opciones</th>';
+                    tabla += '</tr>';
+                    tabla += '</thead>';
+                    tabla += '<tbody>';
+                    tr = '';               	             
+                
+                	$.each(data.agenda, function(i, val) {        	
+                        	
+                		var ruta = Routing.generate('realizar_actividad', { 'factura': val.id });               		
+                		                        
+                        tr += '<tr class="'+ val.estado +'">';
+                        tr += '<td>'+val.hora+'</td>';
+                        tr += '<td>'+val.fecha+'</td>';
+                        tr += '<td>'+val.identificacion+'</td>';
+                        tr += '<td>'+val.priNombre+" "+val.segNombre+" "+val.priApellido+" "+val.segApellido+'</td>';
+                        tr += '<td>'+val.cliente+'</td>';
+                        tr += '<td>'+val.cargo+'</td>';                        
+                        tr += '<td>'+val.observacion+'</td>';
+                        tr += '<td>'+val.estado+'</td>';
+                        tr += '<td><a href="'+ ruta +'" >Realizar</a></td>';
+                        tr += '<tr>';                               
+                        
+            		});
+
+                	tabla += tr;
+                    tabla += '</tbody></table>';
+
+                	$("#programacion").html(tabla);
+                 }
+                 else if(data.responseCode==400){
+                	 $("#programacion").empty();
+                  	$('#ajaxMsg').html(data.msg);
+                    $('#ajaxMsg').css("color","red");
+                 }
+                 else{
+             	    alert("Ha ocurrido un error en el sistema.");
+                 }
+          });
+        }else{
+            alert("Selecciona una opción valida");
+        }
+    });
+</script>
+{% endblock %}

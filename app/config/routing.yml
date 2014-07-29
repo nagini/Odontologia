@@ -1,0 +1,36 @@
+_welcome:
+    pattern:  /welcome
+    defaults: { _controller: UsuarioBundle:Default:index }
+
+AdminBundle:
+    resource: "@AdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+AgendaBundle:
+    resource: "@AgendaBundle/Resources/config/routing.yml"
+    prefix:   /agenda
+
+ParametrizarBundle:
+    resource: "@ParametrizarBundle/Resources/config/routing.yml"
+    prefix:   /parametrizar
+
+UsuarioBundle:
+    resource: "@UsuarioBundle/Resources/config/routing.yml"
+    prefix:   /
+    
+    
+# Ruta para la acción de login del aux
+aux_login:
+    pattern:   /
+    defaults:  { _controller: AdminBundle:Usuario:auxLogin }
+
+# Ruta para la acción que comprueba el login del aux.
+aux_login_check:
+    pattern:   /login_check
+
+# Ruta para la acción de logout.
+logout:
+    pattern:   /logout
+    
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

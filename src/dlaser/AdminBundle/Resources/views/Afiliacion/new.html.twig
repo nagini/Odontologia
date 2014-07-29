@@ -1,0 +1,44 @@
+{% extends "ParametrizarBundle::auxLayout.html.twig" %}
+
+{% block titulo %}Aseguradoras asociadas{% endblock %}
+
+{% block cuerpo %}
+<form action="{{ path('afiliacion_save', { 'paciente': paciente.id }) }}" method="post" {{ form_enctype(form) }}>
+        <fieldset>
+        	<legend>Datos de la aseguradora</legend>
+        	{{ form_widget(form) }}
+        </fieldset>
+        
+        <button class="action blue" type="submit">
+            <span class="label">Crear</span>
+        </button>        
+    </form>
+    
+    <br /><br /><br /><br />  
+    
+    <table>
+        <caption>Registro de aseguradoras asociadas</caption>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nit</th>
+                <th>Nombre</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for afiliacion in afiliaciones %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="#">{{ afiliacion.cliente.nit }}</a></td>
+                <td>{{ afiliacion.cliente.nombre }}</td>
+                <td><a class="button" href="{{ path('afiliacion_delete', { 'paciente': afiliacion.paciente.id, 'cliente': afiliacion.cliente.id}) }}" title="Eliminar"><span class="icon icon186"></span></a></td>
+            </tr>
+         {% else %}
+         	<tr>
+         		<td colspan="4">No tenemos asociaciones creadas.</td>
+         	</tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

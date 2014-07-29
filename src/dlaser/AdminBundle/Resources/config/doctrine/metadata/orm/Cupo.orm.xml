@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Cupo" table="cupo">
+    <change-tracking-policy>DEFERRED_IMPLICIT</change-tracking-policy>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="hora" type="datetime" column="hora"/>
+    <field name="estado" type="string" column="estado" length="2"/>
+    <field name="nota" type="string" column="nota" length="255"/>
+    <field name="registra" type="integer" column="registra"/>
+    <field name="verificacion" type="string" column="verificacion" length="20"/>
+    <many-to-one field="cargo" target-entity="Cargo" orphan-removal="">
+      <join-columns>
+        <join-column name="cargo_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="agenda" target-entity="Agenda" orphan-removal="">
+      <join-columns>
+        <join-column name="agenda_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="paciente" target-entity="Paciente" orphan-removal="">
+      <join-columns>
+        <join-column name="paciente_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <lifecycle-callbacks/>
+  </entity>
+</doctrine-mapping>

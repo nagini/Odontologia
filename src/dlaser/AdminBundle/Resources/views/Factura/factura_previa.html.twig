@@ -1,0 +1,69 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Factura de venta{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+
+{% block cuerpo %}
+
+<table>
+	<tbody>
+		<tr>
+			<td>Fecha:</td>
+			<td>{{ date('now')|date('d/m/Y') }}</td>
+		</tr>
+		<tr>
+			<td>Empresa:</td>
+			<td>{{ cliente.nombre}}</td>
+		</tr>
+		<tr>
+			<td>Nit:</td>
+			<td>{{ cliente.nit}}</td>
+		</tr>
+		<tr>
+			<td>Dirección:</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Teléfono:</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+
+<form action="{{ path('factura_final_save', {'cliente': cliente.id, 'sede': sede.id}) }}" onSubmit="return confirm('Seguro de querer generar la factura?');" method="post">
+    <fieldset>
+    	<legend>Datos de la factura</legend>
+    
+    	{{ form_widget(form) }}
+    </fieldset>
+    
+    <button class="action blue" type="submit">
+        <span class="label">Generar</span>
+    </button>
+    
+</form>
+	      		
+{% endblock %}

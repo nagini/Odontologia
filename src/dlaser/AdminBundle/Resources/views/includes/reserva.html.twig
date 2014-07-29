@@ -1,0 +1,15 @@
+<header>	
+	<nav id="menu_main" class="grid_11">
+        <ul>
+            <li><a href="{{ path('agenda_aux_list') }}" class="bundle">Agenda</a></li>
+            <li><a href="{{ path('cupo_new') }}" class="bundle sel">Reserva</a></li>
+            <li><a href="{{ path('factura_search') }}" class="bundle">Facturar</a></li>
+            <li><a href="{{ path('th_buscar') }}" class="bundle">Informes</a></li>
+         </ul>
+     </nav>    
+    <aside id="info_sesion" class="grid_5">
+        <div id="username"><a href="#"> {{ app.user }} </a></div>
+        
+        <div id="logout"><a href="{{ path('logout') }}" class="button right"><span class="icon icon151"></span></a></div>
+    </aside>
+</header>
