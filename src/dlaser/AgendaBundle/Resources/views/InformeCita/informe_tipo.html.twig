@@ -24,10 +24,16 @@
 	{% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	
+	<link href="{{ asset('bundles/dlaser/css/jquery-ui.custom.css') }}" rel="stylesheet" type="text/css" />	
+	 
+{% endblock %}
 
 {% block cuerpo %}
 
-<form action="{{ path('factura_medico_list') }}" onSubmit="return confirm('Seguro de querer generar el reporte?');" method="post">
+<form action="{{ path('informe_tipo_citas') }}" onSubmit="return confirm('Seguro de querer generar el reporte?');" method="post">
     <fieldset>
     	<legend>Datos del reporte</legend>
 
@@ -42,14 +48,24 @@
     </div>
     
     <div>
+    	<label for="tipo">Tipo:</label>
+    	<select id="tipo" name="tipo">
+    		<option value="G">General</option>
+    	    <option value="C">Cargo</option>
+    	    <option value="A">Agendas</option>
+    	    <option value="P">pacientes</option>    	    
+      	</select>
+    </div>     
+    
+    <div>
     	<label for="f_inicio">Desde:</label>
-    	    <input type="date" name="f_inicio" id="f_inicio" />
+    	    <input type="text" name="f_inicio" id="f_inicio" />
     	    <span>(DD/MM/AAAA)</span>
     </div>
     
     <div>
     	<label for="f_fin">Hasta:</label>
-    	    <input type="date" name="f_fin" id="f_fin" />
+    	    <input type="text" name="f_fin" id="f_fin" />
     	    <span>(DD/MM/AAAA)</span>
     </div>
     
@@ -63,7 +79,34 @@
 	      		
 {% endblock %}
 {% block javascripts %}
+
+<script src="{{ asset('bundles/dlaser/js/jquery-ui.js') }}"></script>
+<script src="{{ asset('bundles/dlaser/js/jquery-ui.min.js') }}"></script>
+
 <script type="text/javascript">
+
+$(function() {   
+
+    $( "#f_inicio" ).datepicker({
+        defaultDate: "+1w",
+        dateFormat: 'dd/mm/yy',
+        changeMonth: true,
+        numberOfMonths: 3,
+        onClose: function( selectedDate ) {
+          $( "#f_fin" ).datepicker( "option", "minDate", selectedDate );
+        }
+      });
+
+    $( "#f_fin" ).datepicker({
+        defaultDate: "+1w",
+        dateFormat: 'dd/mm/yy',
+        changeMonth: true,
+        numberOfMonths: 3,
+        onClose: function( selectedDate ) {
+          $( "#f_inicio" ).datepicker( "option", "maxDate", selectedDate );
+        }
+      });
+});
 	
 </script>
 {% endblock %}

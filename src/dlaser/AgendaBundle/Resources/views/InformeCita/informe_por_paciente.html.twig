@@ -1,0 +1,59 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Reporte por Pacientes{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+{% block cuerpo %}
+
+{% set mylist = {'F': 'CUMPLIDA', 'A': 'NO ASISTIDA', 'C': 'CANCELADA'} %}
+
+<div>
+		<table border="1">
+			<thead> 
+				<tr>
+					<th><b> Nombre			</b></th>
+					<th><b> Apellido		</b></th>		
+					<th><b> Identificacion	</b></th>
+					<th><b> Movil 			</b></th>
+					<th><b> Cantidad		</b></th>
+					<th><b> Estado			</b></th>							
+				</tr>
+			</thead>
+			<tbody>
+				{% for entity in entities %}
+					<tr>
+						<td>{{ entity.priNombre}} {{ entity.segNombre }}</td>						
+						<td>{{ entity.priApellido}} {{ entity.segApellido }}</td>
+						<td>{{ entity.identificacion}}</td>
+						<td>{{ entity.movil }}</td>						
+						<td>{{ entity.cantidad }}</td>
+						<td>{{ mylist[entity.estado]}}</td>						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	      		
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "AdminBundle::admin_layout.html.twig" %}
+
+{% block menu %}
+	{{ knp_menu_render('AdminBundle:Builder:adminMenu') }}
+{% endblock %}
+
+{% block rastro %}{{ wo_render_breadcrumbs() }}{% endblock %}
+
+{% block titulo %}Reporte por Cargo{% endblock %}
+
+{% block msg %}
+	{% if app.session.flash('ok') %}
+	    <div class="success mensajes">
+	        <span>{{ app.session.flash('ok') }}</span>
+	    </div>
+	{% elseif app.session.flash('info') %}
+		<div class="info">
+	        <span>{{ app.session.flash('info') }}</span>
+	    </div>
+	{% elseif app.session.flash('error') %}
+		<div class="error">
+	        <span>{{ app.session.flash('error') }}</span>
+	    </div>
+	{% endif %}
+{% endblock %}
+
+
+{% block cuerpo %}
+
+{% set mylist = {'F': 'CUMPLIDA', 'A': 'NO ASISTIDA', 'C': 'CANCELADA'} %}
+
+<div>
+		<table border="1">
+			<thead> 
+				<tr>
+					<th><b> No					</b></th>
+					<th><b> Codigo Cargo		</b></th>		
+					<th><b> Nombre Cargo		</b></th>
+					<th><b> Cantidad 			</b></th>
+					<th><b> Estado				</b></th>							
+				</tr>
+			</thead>
+			<tbody>
+				{% for entity in entities %}
+					<tr>
+						<td>{{ loop.index}}</td>						
+						<td>{{ entity.cups}}</td>
+						<td>{{ entity.nombre}}</td>
+						<td>{{ entity.cantidad }}</td>
+						<td>{{ mylist[entity.estado]}}</td>						
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	      		
+{% endblock %}

@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="cupo")
  * @ORM\Entity
+ * 
+ * @ORM\Entity(repositoryClass="dlaser\AgendaBundle\Entity\Repository\CupoRepository")
  */
 class Cupo
 {
