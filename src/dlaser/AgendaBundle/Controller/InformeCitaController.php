@@ -64,9 +64,7 @@ class InformeCitaController extends Controller
         $html = $this->render('AgendaBundle:InformeCita:informe_personal_pacientes.html.twig', array(
         		'entity' => $cupo,
         		'paciente' => $paciente
-        ));  
-
-        
+        ));          
         
         return $html;
 	}

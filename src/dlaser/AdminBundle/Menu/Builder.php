@@ -38,7 +38,7 @@ class Builder extends ContainerAware
 					$menu['Agendamiento']['Citas']->addChild('Listado', array('route' => 'cupo_list'));
 					$menu['Agendamiento']['Citas']->addChild('Nueva', array('route' => 'cupo_new'));
 					$menu['Agendamiento']['Citas']->addChild('Consultar', array('route' => 'cupo_search'));
-					$menu['Agendamiento']['Citas']->addChild('Facturar', array('route' => 'factura_search'));
+					$menu['Agendamiento']['Citas']->addChild('Cumplir Cita', array('route' => 'factura_search'));
 												
 		
 		}elseif($securityContext->isGranted('ROLE_MEDICO')){
@@ -56,7 +56,7 @@ class Builder extends ContainerAware
 					$menu['Agendamiento']['Citas']->addChild('Listado', array('route' => 'cupo_list'));
 					$menu['Agendamiento']['Citas']->addChild('Nueva', array('route' => 'cupo_new'));
 					$menu['Agendamiento']['Citas']->addChild('Consultar', array('route' => 'cupo_search'));
-					$menu['Agendamiento']['Citas']->addChild('Facturar', array('route' => 'factura_search'));				
+					$menu['Agendamiento']['Citas']->addChild('Cumplir Cita', array('route' => 'factura_search'));				
 		}
 		
 		$actualUser = $securityContext->getToken()->getUser();
