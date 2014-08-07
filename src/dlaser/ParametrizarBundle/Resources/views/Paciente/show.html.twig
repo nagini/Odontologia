@@ -72,24 +72,6 @@
                 <th>Email</th>
                 <td>{{ paciente.email }}</td>
             </tr>
-            <tr>
-                <th>Email alterno</th>
-                <td>{{ paciente.emailalterno }}</td>
-            </tr>
-            <tr>
-                <th>Rango</th>
-                <td>{{ paciente.rango }}</td>
-            </tr>
-            <tr>
-                <th>Tipo afiliado</th>
-                <td>
-                    {% if(paciente.tipoAfi == "C") %}
-                        Cotizante
-                    {% else %}
-                        Beneficiario
-                    {% endif %}
-                </td>
-            </tr>
         </tbody>
     </table>
     

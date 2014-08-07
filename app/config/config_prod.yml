@@ -24,7 +24,7 @@ doctrine:
         driver:   %database_driver%
         host:     %database_host%
         port:     %database_port%
-        dbname:   dlaser_prod
+        dbname:   cimhe_dev
         user:     %database_user%
         password: %database_password%
         charset:  UTF8

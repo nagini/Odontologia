@@ -157,32 +157,7 @@ class Paciente
      */
     private $email;
 
-    /**
-     * @var string $emailalterno
-     *
-     * @ORM\Column(name="emailAlterno", type="string", length=200, nullable=true)
-     * @Assert\Email(message = "El email '{{ value }}' no es valido.", checkMX = true)
-     */
-    private $emailalterno;
-
-    /**
-     * @var string $rango
-     * 
-     * @ORM\Column(name="rango", type="string", length=1, nullable=true)
-     * @Assert\NotBlank(message="El valor ingresado no puede estar vacio.")
-     * @Assert\Choice(choices = {"A", "B", "C"}, message = "Selecciona una opci��n valida.")
-     */
-    private $rango;
-
-    /**
-     * @var string $tipoAfi
-     * 
-     * @ORM\Column(name="tipo_afi", type="string", length=1, nullable=true)
-     * @Assert\NotBlank(message="El valor ingresado no puede estar vacio.")
-     * @Assert\Choice(choices = {"B", "C"}, message = "Selecciona una opci��n valida.")
-     */
-    private $tipoAfi;
-    
+        
     
     /**
      * Get id
@@ -493,64 +468,5 @@ class Paciente
     {
         return $this->email;
     }
-
-    /**
-     * Set emailalterno
-     *
-     * @param string $emailalterno
-     */
-    public function setEmailalterno($emailalterno)
-    {
-        $this->emailalterno = $emailalterno;
-    }
-
-    /**
-     * Get emailalterno
-     *
-     * @return string 
-     */
-    public function getEmailalterno()
-    {
-        return $this->emailalterno;
-    }
-
-    /**
-     * Set rango
-     *
-     * @param string $rango
-     */
-    public function setRango($rango)
-    {
-        $this->rango = $rango;
-    }
-
-    /**
-     * Get rango
-     *
-     * @return string 
-     */
-    public function getRango()
-    {
-        return $this->rango;
-    }
-
-    /**
-     * Set tipoAfi
-     *
-     * @param string $tipoAfi
-     */
-    public function setTipoAfi($tipoAfi)
-    {
-        $this->tipoAfi = $tipoAfi;
-    }
-
-    /**
-     * Get tipoAfi
-     *
-     * @return string 
-     */
-    public function getTipoAfi()
-    {
-        return $this->tipoAfi;
-    }
+    
 }

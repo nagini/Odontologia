@@ -25,10 +25,7 @@ class PacienteType extends AbstractType
         ->add('zona', 'choice', array('required' => true, 'choices' => array('U' => 'Urbana', 'R' => 'Rural')))
         ->add('telefono', 'integer', array('required' => false, 'label' => 'Teléfono', 'attr' => array('placeholder' => 'Número teléfonico')))
         ->add('movil', 'text', array('required' => false, 'label' => 'Movil', 'attr' => array('placeholder' => 'Número Movil')))
-        ->add('email', 'email', array('required' => false, 'label' => 'Email', 'attr' => array('placeholder' => 'Ingrese email principal')))
-        ->add('email_alterno', 'email', array('required' => false, 'label' => 'Email alterno', 'attr' => array('placeholder' => 'Ingrese email alterno')))
-        ->add('rango', 'choice', array('required' => true, 'choices' => array('A' => 'A', 'B' => 'B', 'C' => 'C')))
-        ->add('tipo_afi', 'choice', array('required' => true, 'label' => 'Tipo afiliado', 'choices' => array('C' => 'Cotizante', 'B' => 'Beneficiario')))
+        ->add('email', 'email', array('required' => false, 'label' => 'Email', 'attr' => array('placeholder' => 'Ingrese email principal')))        
         ;
     }
 

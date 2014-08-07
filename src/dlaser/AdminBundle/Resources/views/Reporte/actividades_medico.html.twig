@@ -56,6 +56,8 @@
             </tr>
         </thead>
         <tbody>
+        
+        {% set mylist = {'I': 'INFORMADA', 'P': 'PENDIENTE', 'C': 'CANCELADA'} %}
                         
         {% for entity in entities %}
             <tr>
@@ -67,7 +69,7 @@
                 <td><a href="{{ path('paciente_edit', { 'id': entity.paciente }) }}" target="popup" title="Modificar admisión" onClick="popup(this.href,750,600); return false;">{{ entity.priNombre|capitalize }} {{ entity.segNombre|capitalize }} {{ entity.priApellido|capitalize }} {{ entity.segApellido|capitalize }}</a></td>
                 <td>{{ entity.cups }}</td>
                 <td>{{ entity.valor }}</td>                
-                <td>{{ entity.estado }}</td>                
+                <td>{{ mylist[entity.estado]}}</td>	               
             </tr>
          {% else %}
          	<tr>

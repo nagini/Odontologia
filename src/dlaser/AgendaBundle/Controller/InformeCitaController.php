@@ -33,8 +33,8 @@ class InformeCitaController extends Controller
 	public function informePacienteAction($paciente)
 	{
 		$em = $this->getDoctrine()->getEntityManager();    
-        $paciente = $em->getRepository('ParametrizarBundle:Paciente')->find($paciente);
-        $sede  = $em->getRepository('ParametrizarBundle:Sede')->find(4);
+        $paciente = $em->getRepository('ParametrizarBundle:Paciente')->find($paciente);        
+        
     
         if (!$paciente) {
             throw $this->createNotFoundException('El paciente solicitado no existe.');
